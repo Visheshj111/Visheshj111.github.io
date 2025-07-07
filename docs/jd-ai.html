@@ -127,6 +127,7 @@ ${jdText}
       });
 
       const data = await response.json();
+      console.log("API response:", data);
       const output = data.choices?.[0]?.message?.content || "No output.";
       document.getElementById("result").textContent = output;
     }
