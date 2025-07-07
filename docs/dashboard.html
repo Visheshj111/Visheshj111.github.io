@@ -5,10 +5,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
-      margin: 0;
       font-family: 'Inter', sans-serif;
       background: linear-gradient(to right, #dfe9f3, #ffffff);
-      padding: 0;
+      margin: 0;
     }
 
     header {
@@ -25,16 +24,25 @@
     }
 
     .container {
-      max-width: 900px;
-      margin: 40px auto;
+      max-width: 1000px;
+      margin: 30px auto;
       padding: 20px;
     }
 
+    .section {
+      margin-bottom: 50px;
+    }
+
+    .section h2 {
+      text-align: center;
+      color: #4e54c8;
+    }
+
     .card {
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.95);
       border-radius: 16px;
       padding: 20px;
-      margin-bottom: 20px;
+      margin: 10px 0;
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.07);
       transition: transform 0.2s ease;
     }
@@ -49,21 +57,29 @@
       text-decoration: none;
     }
 
-    .form-container {
-      background: white;
-      padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      margin-top: 40px;
+    .add-icon {
+      text-align: right;
+      margin-bottom: 10px;
     }
 
-    input {
+    .add-icon button {
+      font-size: 24px;
+      background: #4e54c8;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+    }
+
+    input, textarea {
       width: 100%;
       padding: 12px;
-      margin: 8px 0;
-      border: 1px solid #ccc;
-      border-radius: 8px;
+      margin: 10px 0;
       font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
     }
 
     button {
@@ -93,50 +109,54 @@
     .logout button:hover {
       background: #c53030;
     }
-
   </style>
 </head>
 <body>
 
   <header>
     <h1>📊 Placement Dashboard</h1>
-    <p>Access your authorized Google Sheets</p>
   </header>
 
   <div class="container">
 
-    <div id="sheetList">
-      <p>Loading your sheets...</p>
+    <div class="section">
+      <h2>Your Google Sheets</h2>
+      <div class="add-icon">
+        <button onclick="showAddForm()">+</button>
+      </div>
+      <div id="sheetList">
+        <p>Loading your sheets...</p>
+      </div>
+      <div id="sheetForm" style="display:none">
+        <input type="text" id="sheetName" placeholder="Sheet Name">
+        <input type="text" id="sheetURL" placeholder="Google Sheet URL">
+        <button onclick="addSheet()">Add Sheet</button>
+      </div>
     </div>
 
-    <div class="form-container">
-      <h2>Add a New Google Sheet</h2>
-      <input type="text" id="sheetName" placeholder="Sheet Name">
-      <input type="text" id="sheetURL" placeholder="Google Sheet URL">
-      <button onclick="addSheet()">➕ Add Sheet</button>
+    <div class="section">
+      <h2>📄 JD to Notice Generator</h2>
+      <textarea rows="5" placeholder="Paste JD here..."></textarea>
+      <button disabled>Generate Notice (coming soon)</button>
     </div>
 
     <div class="logout">
-      <button onclick="logout()">🚪 Logout</button>
+      <button onclick="logout()">Logout</button>
     </div>
 
   </div>
 
   <script type="module">
     import { auth } from './firebase-config.js';
-    import {
-      getFirestore, doc, getDoc, setDoc
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-    import {
-      onAuthStateChanged, signOut
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
     const db = getFirestore();
     const sheetList = document.getElementById("sheetList");
 
     onAuthStateChanged(auth, async user => {
       if (!user) {
-        window.location.href = "login.html";
+        window.location.href = "signup.html";
         return;
       }
 
@@ -152,23 +172,21 @@
           sheets.forEach(sheet => {
             const div = document.createElement("div");
             div.className = "card";
-            div.innerHTML = `
-              <strong>${sheet.name}</strong><br>
-              <a href="${sheet.url}" target="_blank">🔗 Open Sheet</a>
-            `;
+            div.innerHTML = `<strong>${sheet.name}</strong><br><a href="${sheet.url}" target="_blank">Open Sheet</a>`;
             sheetList.appendChild(div);
           });
         } else {
           sheetList.innerHTML = "<p>No sheets added yet.</p>";
         }
       } else {
-        await setDoc(userDoc, {
-          email: user.email,
-          sheets: []
-        });
+        await setDoc(userDoc, { email: user.email, sheets: [] });
         sheetList.innerHTML = "<p>No sheets added yet.</p>";
       }
     });
+
+    window.showAddForm = function () {
+      document.getElementById("sheetForm").style.display = 'block';
+    };
 
     window.addSheet = async function () {
       const user = auth.currentUser;
@@ -176,11 +194,7 @@
 
       const name = document.getElementById("sheetName").value.trim();
       const url = document.getElementById("sheetURL").value.trim();
-
-      if (!name || !url) {
-        alert("Both fields are required!");
-        return;
-      }
+      if (!name || !url) return alert("Both fields are required!");
 
       const userDocRef = doc(db, "users", user.uid);
       const userSnap = await getDoc(userDocRef);
@@ -202,11 +216,7 @@
       location.reload();
     };
 
-    window.logout = () => {
-      signOut(auth).then(() => {
-        window.location.href = "login.html";
-      });
-    };
+    window.logout = () => signOut(auth).then(() => window.location.href = "login.html");
   </script>
 
 </body>
