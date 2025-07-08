@@ -28,13 +28,23 @@
       margin-top: 10vh;
     }
 
-    input:focus {
-      transform: scale(1.05);
+    .glass-input {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1.2rem;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 12px;
+      background-color: rgba(255,255,255,0.05);
+      color: white;
+      outline: none;
       transition: all 0.3s ease;
     }
 
-    input {
-      transition: transform 0.2s ease;
+    .glass-input:focus {
+      border-color: #7dcfff;
+      box-shadow: 0 0 12px #7dcfff99;
+      background-color: rgba(255,255,255,0.1);
+      transform: scale(1.03);
     }
 
     button {
@@ -46,7 +56,6 @@
       font-weight: bold;
       cursor: pointer;
       width: 100%;
-      margin-top: 1rem;
       transition: all 0.3s ease;
     }
 
@@ -65,11 +74,39 @@
 <body>
   <div class="glass-card">
     <h1>Login</h1>
-    <form>
-      <input type="email" placeholder="Email" class="w-full mb-4 p-3 rounded-md bg-white bg-opacity-10 border border-white focus:outline-none text-white placeholder-white" />
-      <input type="password" placeholder="Password" class="w-full mb-4 p-3 rounded-md bg-white bg-opacity-10 border border-white focus:outline-none text-white placeholder-white" />
+    <form id="loginForm">
+      <input type="email" placeholder="Email" class="glass-input" id="email" required />
+      <input type="password" placeholder="Password" class="glass-input" id="password" required />
       <button type="submit">Login</button>
     </form>
   </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
+  <script>
+    const firebaseConfig = {
+      // 🔥 Replace with your Firebase config
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then(() => {
+          alert("Login successful!");
+          window.location.href = "index.html";
+        })
+        .catch((error) => {
+          alert("Login failed: " + error.message);
+        });
+    });
+  </script>
 </body>
 </html>
