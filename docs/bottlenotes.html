@@ -11,100 +11,158 @@
       background: url('bg.jpg') no-repeat center center fixed;
       background-size: cover;
       font-family: 'Rubik', sans-serif;
+      overflow-x: hidden;
+    }
+    /* Glassmorphism base */
+    .glass {
+      background: rgba(255,255,255,0.16);
+      backdrop-filter: blur(22px) saturate(140%);
+      -webkit-backdrop-filter: blur(22px) saturate(140%);
+      border-radius: 22px;
+      border: 1.5px solid rgba(255,255,255,0.19);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.22);
+      color: #fff;
+      transition: box-shadow 0.3s cubic-bezier(.4,2,.7,.6), background 0.3s;
     }
     .glass-card {
-      background: rgba(255,255,255,0.15);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 20px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-      color: #fff;
+      @apply glass;
+      padding: 2rem 1.5rem;
+      margin-bottom: 2rem;
     }
     .sidebar {
-      min-width: 210px;
-      max-width: 230px;
-      padding: 2rem 1rem 2rem 1.25rem;
-      transition: left 0.3s;
+      min-width: 240px;
+      max-width: 270px;
+      padding: 2.5rem 1rem 2rem 1.5rem;
+      transition: left 0.3s cubic-bezier(.4,2,.7,.6);
+      position: relative;
+      z-index: 10;
     }
     .sidebar-title {
-      font-size: 1.3rem;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      margin-bottom: 1.5rem;
+      font-size: 1.42rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 1.7rem;
       text-align: left;
       color: #cfe4ff;
-      text-shadow: 0 0 8px rgba(0,0,0,0.15);
+      text-shadow: 0 0 13px rgba(0,0,0,0.14);
+      transition: color 0.2s;
+      user-select: none;
     }
     .sidebar-btn, .sidebar a {
-      display: block;
+      display: flex;
+      align-items: center;
+      gap: 0.65em;
       width: 100%;
       text-align: left;
       background: none;
       border: none;
       color: #e0eaff;
       font-weight: 500;
-      margin-bottom: 0.8rem;
-      padding: 0.5rem 0.8rem;
-      border-radius: 8px;
-      transition: background 0.15s;
+      margin-bottom: 0.95rem;
+      padding: 0.67rem 1rem;
+      border-radius: 10px;
+      transition: background 0.18s, color 0.18s, transform 0.22s;
       cursor: pointer;
-      font-size: 1rem;
+      font-size: 1.04rem;
       text-decoration: none;
+      box-shadow: none;
+      outline: none;
     }
     .sidebar-btn.active, .sidebar a.active, .sidebar-btn:hover, .sidebar a:hover {
-      background: rgba(255,255,255,0.27);
+      background: rgba(255,255,255,0.21);
       color: #2472ff;
+      transform: translateX(3px) scale(1.034);
+    }
+    .workspace-switch {
+      margin-bottom: 1.9rem;
+      margin-top: 1.2rem;
+    }
+    .workspace-select {
+      width: 85%;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 7px;
+      padding: 0.4rem 0.6rem;
+      margin-left: 0.2rem;
+      outline: none;
+      font-size: 1.02rem;
+      margin-bottom: 0.2rem;
+      transition: border 0.15s, background 0.15s;
+    }
+    .workspace-select:focus {
+      border-color: #82abff;
+      background: rgba(255,255,255,0.16);
     }
     .note-list {
-      max-height: 70vh;
+      max-height: 64vh;
       overflow-y: auto;
-      margin-top: 1.5rem;
+      margin-top: 1.3rem;
+      transition: max-height 0.3s;
+      scrollbar-width: thin;
+      scrollbar-color: #69aaff #0001;
     }
     .note-list-item {
-      background: rgba(255,255,255,0.09);
-      border-radius: 13px;
-      margin-bottom: 0.7rem;
-      padding: 0.8rem 1rem;
+      background: rgba(255,255,255,0.08);
+      border-radius: 14px;
+      margin-bottom: 0.67rem;
+      padding: 0.96rem 1.05rem 0.86rem 1.1rem;
       cursor: pointer;
-      transition: background 0.18s, transform 0.18s;
-      border: 1px solid rgba(255,255,255,0.1);
+      border: 1.5px solid transparent;
+      transition: background 0.18s, transform 0.25s, border 0.2s;
+      position: relative;
+      animation: fadeInUp 0.42s cubic-bezier(.4,2,.7,.6);
     }
     .note-list-item.selected, .note-list-item:hover {
-      background: rgba(255,255,255,0.2);
-      transform: scale(1.025);
+      background: rgba(255,255,255,0.18);
+      border: 1.5px solid #3c77ff66;
       color: #2472ff;
+      transform: scale(1.022) translateX(7px);
+      z-index: 2;
     }
     .note-title {
-      font-weight: 600;
-      font-size: 1.1rem;
-      margin-bottom: 0.2rem;
+      font-weight: 700;
+      font-size: 1.10rem;
+      margin-bottom: 0.13rem;
       color: #fff;
+      letter-spacing: 0.2px;
+      transition: color 0.18s;
     }
     .note-snippet {
-      font-size: 0.92rem;
-      color: #e0eaff;
-      opacity: 0.64;
+      font-size: 0.97rem;
+      color: #d9eaff;
+      opacity: 0.66;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    .note-meta {
+      position: absolute;
+      bottom: 7px;
+      right: 18px;
+      font-size: 0.75rem;
+      color: #c7e1ff99;
+      opacity: 0.7;
+    }
     .editor-container {
-      min-height: 80vh;
-      padding: 20;
+      min-height: 82vh;
+      padding: 0;
       margin: 0;
       display: flex;
       flex-direction: column;
       width: 100%;
+      position: relative;
     }
     .editor-header {
       display: flex;
-      gap: 1rem;
+      gap: 1.3rem;
       align-items: center;
-      margin-bottom: 1rem;
+      margin-bottom: 1.1rem;
+      margin-top: 0.7rem;
+      flex-wrap: wrap;
     }
     .editor-title {
-      font-size: 1.25rem;
+      font-size: 1.28rem;
       font-weight: 600;
       background: transparent;
       color: #e0eaff;
@@ -112,105 +170,291 @@
       outline: none;
       margin-left: 0.5rem;
       flex: 1;
+      transition: color 0.18s;
+      border-radius: 7px;
+      padding: 0.2rem 0.5rem;
+      box-shadow: none;
+    }
+    .editor-title:focus {
+      background: rgba(255,255,255,0.09);
+      color: #2472ff;
+    }
+    .editor-toolbar button {
+      background: rgba(255,255,255,0.13);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #2472ff;
+      font-weight: 600;
+      padding: 7px 16px;
+      border-radius: 10px;
+      margin-right: 0.6rem;
+      cursor: pointer;
+      transition: background 0.14s, color 0.13s, transform 0.18s;
+      outline: none;
+      font-size: 1rem;
+      box-shadow: none;
+    }
+    .editor-toolbar button:hover, .editor-toolbar button:focus {
+      background: rgba(255,255,255,0.23);
+      color: #0737a6;
+      transform: scale(1.06);
+    }
+    .editor-tags {
+      display: flex;
+      gap: 0.38rem;
+      flex-wrap: wrap;
+      margin-left: 0.4rem;
+      margin-top: 0.15rem;
+      margin-bottom: 0.3rem;
+    }
+    .tag {
+      background: rgba(255,255,255,0.23);
+      color: #3573f7;
+      font-weight: 500;
+      font-size: 0.88rem;
+      border-radius: 7px;
+      padding: 3px 12px;
+      margin-right: 0.2rem;
+      margin-bottom: 0.1rem;
+      display: inline-block;
+      cursor: pointer;
+      transition: background 0.15s, color 0.18s;
+    }
+    .tag:hover {
+      background: #3573f7;
+      color: #fff;
     }
     .editor-content {
       flex: 1;
-      min-height: 250px;
+      min-height: 260px;
       width: 100%;
       resize: vertical;
       border: none;
       background: transparent;
       color: #fff;
-      font-size: 1.07rem;
+      font-size: 1.09rem;
       font-family: inherit;
-      padding: 0.5rem 0.5rem 0.5rem 0.2rem;
+      padding: 0.5rem 0.2rem 0.5rem 0.2rem;
       outline: none;
       border-radius: 10px;
       box-shadow: none;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.7rem;
+      transition: background 0.19s;
     }
-    .editor-toolbar button {
-      background: rgba(255,255,255,0.14);
-      border: 1px solid rgba(255,255,255,0.15);
+    .editor-content:focus {
+      background: rgba(255,255,255,0.10);
       color: #2472ff;
-      font-weight: 600;
-      padding: 7px 15px;
-      border-radius: 9px;
-      margin-right: 0.7rem;
+    }
+    /* Floating (+) button for new note */
+    .fab {
+      position: fixed;
+      bottom: 34px;
+      right: 32px;
+      background: linear-gradient(135deg,#3573f7 55%,#8eafff 100%);
+      color: #fff;
+      font-size: 2.1rem;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 32px #003a;
       cursor: pointer;
-      transition: background 0.15s;
+      z-index: 30;
+      transition: background 0.22s, transform 0.2s;
+      border: none;
+      outline: none;
     }
-    .editor-toolbar button:hover {
-      background: rgba(255,255,255,0.27);
+    .fab:hover {
+      background: linear-gradient(120deg,#8eafff 55%,#3573f7 100%);
+      transform: scale(1.09);
     }
-    @media (max-width: 800px) {
-      .sidebar { display: none; }
+    /* Animation */
+    @keyframes fadeInUp {
+      from { opacity:0; transform:translateY(18px);}
+      to { opacity:1; transform:none;}
+    }
+    /* Modal for tags & search */
+    .modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(40,50,80,0.15);
+      display: flex;
+      align-items: center; justify-content: center;
+      z-index: 50;
+      animation: fadeInUp 0.2s;
+    }
+    .modal-content {
+      @apply glass;
+      min-width: 320px; max-width: 90vw;
+      padding: 2rem 1.4rem 1.2rem 1.4rem;
+      border-radius: 18px;
+      box-shadow: 0 8px 40px #0035;
+      position: relative;
+      animation: fadeInUp 0.22s;
+    }
+    .modal-close {
+      position: absolute;
+      right: 1.35rem;
+      top: 1.2rem;
+      background: transparent;
+      border: none;
+      color: #3573f7;
+      font-size: 1.22rem;
+      cursor: pointer;
+      font-weight: bold;
+      opacity: 0.7;
+      transition: opacity 0.14s;
+    }
+    .modal-close:hover {
+      opacity: 1;
+      color: #0737a6;
+    }
+    .searchbox {
+      width: 94%;
+      padding: 0.7rem 1rem;
+      margin-bottom: 1.4rem;
+      border-radius: 9px;
+      border: 1px solid #d3e2ff44;
+      background: rgba(255,255,255,0.12);
+      color: #3573f7;
+      font-size: 1.07rem;
+      outline: none;
+      transition: border 0.17s;
+    }
+    .searchbox:focus {
+      border-color: #3573f7;
+      background: rgba(255,255,255,0.19);
+    }
+    /* Responsive styles */
+    @media (max-width: 950px) {
+      .sidebar { min-width: 90px; max-width: 100vw; padding: 1.2rem 0.3rem;}
       .main-flex { flex-direction: column; }
-      .editor-container { min-height: 50vh; }
+      .editor-container { min-height: 60vh; }
+      .glass-card { padding: 1.1rem 0.6rem;}
     }
+    /* Mobile sidebar toggle */
     .sidebar-toggle {
       display: none;
-      background: rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.13);
       border: none;
-      color: #fff;
-      font-size: 1.5rem;
-      padding: 0.5rem 1rem;
-      border-radius: 10px;
-      position: absolute;
-      top: 26px;
-      left: 15px;
-      z-index: 10;
+      color: #3573f7;
+      font-size: 2.2rem;
+      padding: 0.25rem 1.3rem 0.25rem 1.1rem;
+      border-radius: 13px;
+      position: fixed;
+      top: 22px;
+      left: 18px;
+      z-index: 100;
       cursor: pointer;
+      box-shadow: 0 2px 14px #0035;
+      transition: background 0.18s;
     }
-    @media (max-width: 800px) {
+    .sidebar-toggle:hover {
+      background: rgba(255,255,255,0.32);
+    }
+    @media (max-width: 950px) {
       .sidebar-toggle { display: block; }
       .sidebar {
         display: block;
         position: fixed;
-        left: -103vw;
+        left: -110vw;
         top: 0; bottom: 0;
         height: 100vh;
-        z-index: 22;
-        background: rgba(22,26,51,0.73);
+        z-index: 90;
         box-shadow: 0 0 20px #003;
-        transition: left 0.25s;
+        background: rgba(22,26,51,0.84);
+        transition: left 0.24s cubic-bezier(.4,2,.7,.6);
       }
       .sidebar.open {
         left: 0;
       }
     }
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 7px; }
+    ::-webkit-scrollbar-thumb {
+      background: #3573f733;
+      border-radius: 6px;
+    }
+    ::-webkit-scrollbar-track { background: transparent; }
+    /* Animations */
+    .fade-in { animation: fadeInUp 0.32s; }
   </style>
 </head>
 <body>
+  <!-- Sidebar toggle (mobile) -->
   <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
   <div class="flex main-flex" style="min-height: 100vh;">
     <!-- Sidebar -->
-    <nav class="sidebar glass-card" id="sidebar">
-      <div class="sidebar-title">bottlenotes</div>
-      <button class="sidebar-btn active" onclick="showAllNotes()">All Notes</button>
-      <button class="sidebar-btn" onclick="showTrash()">Trash</button>
-      <a href="index.html" class="sidebar-btn" style="margin-top: 2rem;">← Home</a>
-      <div style="margin-top: 2.5rem;">
-        <button class="sidebar-btn" onclick="logout()">Logout</button>
+    <nav class="sidebar glass" id="sidebar">
+      <div class="sidebar-title">🧊 bottlenotes</div>
+      <div class="workspace-switch">
+        <select class="workspace-select" id="workspace-select" onchange="switchWorkspace()">
+          <option value="default">Personal</option>
+          <option value="work">Work</option>
+          <option value="ideas">Ideas</option>
+          <option value="archive">Archive</option>
+        </select>
+      </div>
+      <button class="sidebar-btn active" onclick="showAllNotes()"><span>🗒️</span> All Notes</button>
+      <button class="sidebar-btn" onclick="showFavorites()"><span>⭐</span> Favorites</button>
+      <button class="sidebar-btn" onclick="showTagsModal()"><span>🏷️</span> Tags</button>
+      <button class="sidebar-btn" onclick="showTrash()"><span>🗑️</span> Trash</button>
+      <a href="index.html" class="sidebar-btn" style="margin-top: 2.1rem;"><span>🏠</span> Home</a>
+      <div style="margin-top: 2.6rem;">
+        <button class="sidebar-btn" onclick="logout()"><span>🚪</span> Logout</button>
       </div>
       <div class="note-list" id="note-list"></div>
     </nav>
     <!-- Main Editor Area -->
     <main class="flex-1 px-2 py-4 md:px-12">
-      <div class="glass-card editor-container" id="editor-container">
+      <div class="glass editor-container" id="editor-container">
         <div class="editor-header">
           <input type="text" id="note-title" class="editor-title" placeholder="Untitled note..." autocomplete="off" />
+          <div class="editor-tags" id="editor-tags"></div>
           <div class="editor-toolbar">
-            <button onclick="saveNote()">Save</button>
-            <button onclick="deleteNote()">Delete</button>
-            <button onclick="newNote()">New +</button>
+            <button onclick="saveNote()" title="Save (Ctrl+S)">💾 Save</button>
+            <button onclick="favoriteNote()" id="fav-btn" title="Favorite">⭐</button>
+            <button onclick="showTagsModal()" title="Tags">🏷️</button>
+            <button onclick="deleteNote()" title="Delete">🗑️</button>
           </div>
         </div>
-        <textarea id="note-content" class="editor-content" placeholder="Write your note here..." rows="10"></textarea>
+        <textarea id="note-content" class="editor-content" placeholder="Write your note here... Use Markdown! (e.g. **bold**, # Titles, - lists)" rows="12"></textarea>
+        <div style="border-top:1px solid rgba(255,255,255,0.11);padding-top:1rem;">
+          <button onclick="togglePreview()" style="background:rgba(255,255,255,0.08);color:#3573f7;padding:6px 16px;border-radius:9px;margin-right:0.7rem;">👁️ Toggle Preview</button>
+          <button onclick="showSearchModal()" style="background:rgba(255,255,255,0.08);color:#3573f7;padding:6px 16px;border-radius:9px;">🔍 Search</button>
+        </div>
+        <div id="preview-area" class="fade-in" style="display:none; margin-top:1.6rem; background:rgba(255,255,255,0.12); border-radius:13px; padding:1rem 1.2rem; color:#234;">
+          <!-- Rendered Markdown preview -->
+        </div>
       </div>
     </main>
+    <!-- Floating add note button -->
+    <button class="fab" onclick="newNote()" title="New Note (+)">+</button>
   </div>
 
+  <!-- Modal for Tags -->
+  <div class="modal" id="tags-modal" style="display:none;">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeTagsModal()">✕</button>
+      <h3 style="color:#3573f7;font-weight:700;font-size:1.13rem;margin-bottom:1.2rem;">Manage Tags</h3>
+      <div id="tags-list" style="margin-bottom:1.2rem;"></div>
+      <input type="text" id="add-tag-input" placeholder="New tag..." class="searchbox" style="margin-bottom:0.7rem;">
+      <button onclick="addTag()" style="background:#3573f7;color:#fff;padding:7px 19px;border-radius:8px;font-weight:600;font-size:1rem;">Add Tag</button>
+    </div>
+  </div>
+
+  <!-- Modal for Search -->
+  <div class="modal" id="search-modal" style="display:none;">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeSearchModal()">✕</button>
+      <h3 style="color:#3573f7;font-weight:700;font-size:1.13rem;margin-bottom:1.1rem;">Search Notes</h3>
+      <input type="text" id="search-input" class="searchbox" placeholder="Search by title, content, or tag..." oninput="searchNotes()">
+      <div id="search-results" style="margin-top:1.2rem;max-height:220px;overflow-y:auto;"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script>
     // --------- AUTH CHECK ---------
     if (localStorage.getItem('loggedIn') !== 'true') {
@@ -220,40 +464,74 @@
     // --------- SIDEBAR TOGGLE FOR MOBILE ---------
     function toggleSidebar() {
       const sidebar = document.getElementById('sidebar');
-      if (sidebar.classList.contains('open')) {
-        sidebar.classList.remove('open');
-      } else {
-        sidebar.classList.add('open');
-      }
+      sidebar.classList.toggle('open');
     }
-    // Close sidebar on click outside (mobile)
     document.addEventListener('click', function(e) {
       const sidebar = document.getElementById('sidebar');
-      if (window.innerWidth < 800 && sidebar.classList.contains('open')) {
+      if (window.innerWidth < 950 && sidebar.classList.contains('open')) {
         if (!sidebar.contains(e.target) && !e.target.classList.contains('sidebar-toggle')) {
           sidebar.classList.remove('open');
         }
       }
     });
 
-    // --------- NOTES STORAGE (localStorage for now) ---------
-    // Structure: notes = [ {id, title, content, trashed, updated} ]
+    // --------- WORKSPACE ---------
+    function getWorkspace() {
+      return localStorage.getItem('bottlenotes_workspace') || 'default';
+    }
+    function setWorkspace(ws) {
+      localStorage.setItem('bottlenotes_workspace', ws);
+    }
+    function switchWorkspace() {
+      const ws = document.getElementById('workspace-select').value;
+      setWorkspace(ws);
+      currentNoteId = null;
+      renderNoteList();
+      newNote();
+    }
+    // Set workspace selector
+    window.onload = function() {
+      document.getElementById('workspace-select').value = getWorkspace();
+      renderNoteList();
+      newNote();
+    };
+
+    // --------- NOTES, TAGS STORAGE ---------
+    // notes = [ {id, title, content, tags, fav, trashed, updated, workspace} ]
     function getNotes() {
+      const ws = getWorkspace();
+      return (JSON.parse(localStorage.getItem('bottlenotes') || '[]')).filter(n => n.workspace === ws);
+    }
+    function getAllNotes() {
       return JSON.parse(localStorage.getItem('bottlenotes') || '[]');
     }
     function saveNotes(notes) {
-      localStorage.setItem('bottlenotes', JSON.stringify(notes));
+      // merge with other workspaces
+      let allNotes = getAllNotes().filter(n => n.workspace !== getWorkspace());
+      localStorage.setItem('bottlenotes', JSON.stringify([...allNotes, ...notes]));
+    }
+    function getTags() {
+      return JSON.parse(localStorage.getItem('bottlenotes_tags') || '[]');
+    }
+    function saveTags(tags) {
+      localStorage.setItem('bottlenotes_tags', JSON.stringify(tags));
     }
 
     // --------- UI STATE ---------
     let currentNoteId = null;
     let showingTrash = false;
+    let showingFavorites = false;
+    let previewMode = false;
 
     function renderNoteList() {
       const notes = getNotes();
       const listEl = document.getElementById('note-list');
       listEl.innerHTML = '';
-      const filtered = showingTrash ? notes.filter(n=>n.trashed) : notes.filter(n=>!n.trashed);
+      let filtered = notes;
+      if (showingTrash) filtered = notes.filter(n=>n.trashed);
+      else if (showingFavorites) filtered = notes.filter(n=>n.fav && !n.trashed);
+      else filtered = notes.filter(n=>!n.trashed);
+
       if (filtered.length === 0) {
         listEl.innerHTML = `<div class="note-snippet" style="text-align:center;margin-top:1.5rem;opacity:0.5;">No notes here.</div>`;
         return;
@@ -261,9 +539,10 @@
       filtered.sort((a,b)=>b.updated-a.updated);
       for (const note of filtered) {
         const div = document.createElement('div');
-        div.className = 'note-list-item' + (note.id===currentNoteId ? ' selected':'');
+        div.className = 'note-list-item fade-in' + (note.id===currentNoteId ? ' selected':'');
         div.innerHTML = `<div class="note-title">${note.title || 'Untitled'}</div>
-          <div class="note-snippet">${note.content ? note.content.slice(0, 50) : ''}</div>`;
+          <div class="note-snippet">${note.content ? note.content.split('\n')[0].slice(0, 50) : ''}</div>
+          <div class="note-meta">${note.fav ? '⭐ ' : ''}${note.tags && note.tags.length ? '🏷️ ' + note.tags.join(', ') : ''}</div>`;
         div.onclick = ()=>openNote(note.id);
         listEl.appendChild(div);
       }
@@ -276,25 +555,33 @@
       currentNoteId = id;
       document.getElementById('note-title').value = note.title || '';
       document.getElementById('note-content').value = note.content || '';
+      renderEditorTags(note.tags || []);
+      document.getElementById('fav-btn').innerText = note.fav ? '⭐' : '☆';
       renderNoteList();
+      if (previewMode) renderPreview();
     }
 
     function saveNote() {
       let notes = getNotes();
       let note;
+      let tags = [];
       if (currentNoteId) {
         note = notes.find(n=>n.id===currentNoteId);
         if (!note) return;
         note.title = document.getElementById('note-title').value;
         note.content = document.getElementById('note-content').value;
+        note.tags = getCurrentEditorTags();
         note.updated = Date.now();
       } else {
         note = {
           id: '' + Date.now() + Math.random().toString(36).slice(2,8),
           title: document.getElementById('note-title').value,
           content: document.getElementById('note-content').value,
+          tags: getCurrentEditorTags(),
+          fav: false,
           trashed: false,
-          updated: Date.now()
+          updated: Date.now(),
+          workspace: getWorkspace()
         };
         notes.push(note);
         currentNoteId = note.id;
@@ -315,6 +602,7 @@
         currentNoteId = null;
         document.getElementById('note-title').value = '';
         document.getElementById('note-content').value = '';
+        renderEditorTags([]);
         alert('Note deleted permanently.');
       } else {
         note.trashed = true;
@@ -322,6 +610,7 @@
         currentNoteId = null;
         document.getElementById('note-title').value = '';
         document.getElementById('note-content').value = '';
+        renderEditorTags([]);
         alert('Note moved to Trash.');
       }
       saveNotes(notes);
@@ -332,24 +621,49 @@
       currentNoteId = null;
       document.getElementById('note-title').value = '';
       document.getElementById('note-content').value = '';
-      renderNoteList();
+      renderEditorTags([]);
+      document.getElementById('fav-btn').innerText = '☆';
+      if (window.innerWidth < 950) {
+        document.getElementById('sidebar').classList.remove('open');
+      }
+      if (previewMode) renderPreview();
     }
 
     function showAllNotes() {
       showingTrash = false;
+      showingFavorites = false;
       document.querySelectorAll('.sidebar-btn').forEach(btn=>btn.classList.remove('active'));
       document.querySelectorAll('.sidebar-btn')[0].classList.add('active');
-      document.querySelectorAll('.sidebar-btn')[1].classList.remove('active');
       renderNoteList();
       newNote();
     }
-
-    function showTrash() {
-      showingTrash = true;
+    function showFavorites() {
+      showingTrash = false;
+      showingFavorites = true;
       document.querySelectorAll('.sidebar-btn').forEach(btn=>btn.classList.remove('active'));
       document.querySelectorAll('.sidebar-btn')[1].classList.add('active');
       renderNoteList();
       newNote();
+    }
+    function showTrash() {
+      showingTrash = true;
+      showingFavorites = false;
+      document.querySelectorAll('.sidebar-btn').forEach(btn=>btn.classList.remove('active'));
+      document.querySelectorAll('.sidebar-btn')[3].classList.add('active');
+      renderNoteList();
+      newNote();
+    }
+
+    function favoriteNote() {
+      if (!currentNoteId) return;
+      let notes = getNotes();
+      let note = notes.find(n=>n.id===currentNoteId);
+      if (!note) return;
+      note.fav = !note.fav;
+      note.updated = Date.now();
+      saveNotes(notes);
+      document.getElementById('fav-btn').innerText = note.fav ? '⭐' : '☆';
+      renderNoteList();
     }
 
     function logout() {
@@ -357,10 +671,161 @@
       window.location.href = 'login.html';
     }
 
+    // --------- TAGS ---------
+    function renderEditorTags(tags) {
+      const el = document.getElementById('editor-tags');
+      el.innerHTML = '';
+      (tags || []).forEach((tag, idx) => {
+        const span = document.createElement('span');
+        span.className = 'tag';
+        span.innerText = tag;
+        span.title = 'Remove tag';
+        span.onclick = function() {
+          removeEditorTag(idx);
+        }
+        el.appendChild(span);
+      });
+      // Add tag button
+      const addBtn = document.createElement('span');
+      addBtn.className = 'tag';
+      addBtn.innerText = '+ tag';
+      addBtn.style.background = 'rgba(255,255,255,0.10)';
+      addBtn.style.color = '#8eafff';
+      addBtn.onclick = showTagsModal;
+      el.appendChild(addBtn);
+    }
+    function getCurrentEditorTags() {
+      return Array.from(document.getElementById('editor-tags').querySelectorAll('.tag'))
+        .map(tag => tag.innerText)
+        .filter(t => t !== '+ tag');
+    }
+    function removeEditorTag(idx) {
+      const tags = getCurrentEditorTags();
+      tags.splice(idx, 1);
+      renderEditorTags(tags);
+    }
+    function showTagsModal() {
+      document.getElementById('tags-modal').style.display = 'flex';
+      renderTagsList();
+      document.getElementById('add-tag-input').value = '';
+    }
+    function closeTagsModal() {
+      document.getElementById('tags-modal').style.display = 'none';
+    }
+    function renderTagsList() {
+      const el = document.getElementById('tags-list');
+      const allTags = getTags();
+      const noteTags = getCurrentEditorTags();
+      el.innerHTML = '';
+      allTags.forEach(tag => {
+        const btn = document.createElement('span');
+        btn.className = 'tag';
+        btn.innerText = tag;
+        if (noteTags.includes(tag)) {
+          btn.style.background = '#3573f7';
+          btn.style.color = '#fff';
+        }
+        btn.onclick = function() {
+          if (!noteTags.includes(tag)) {
+            renderEditorTags([...noteTags, tag]);
+          } else {
+            renderEditorTags(noteTags.filter(t => t !== tag));
+          }
+        }
+        el.appendChild(btn);
+      });
+    }
+    function addTag() {
+      let tag = document.getElementById('add-tag-input').value.trim();
+      if (!tag) return;
+      let tags = getTags();
+      if (!tags.includes(tag)) {
+        tags.push(tag);
+        saveTags(tags);
+      }
+      renderTagsList();
+      renderEditorTags([...getCurrentEditorTags(), tag]);
+      document.getElementById('add-tag-input').value = '';
+    }
+
+    // --------- SEARCH ---------
+    function showSearchModal() {
+      document.getElementById('search-modal').style.display = 'flex';
+      document.getElementById('search-input').value = '';
+      document.getElementById('search-results').innerHTML = '';
+    }
+    function closeSearchModal() {
+      document.getElementById('search-modal').style.display = 'none';
+    }
+    function searchNotes() {
+      const q = document.getElementById('search-input').value.trim().toLowerCase();
+      const notes = getNotes().filter(n=>!n.trashed);
+      const results = notes.filter(n =>
+        (n.title && n.title.toLowerCase().includes(q)) ||
+        (n.content && n.content.toLowerCase().includes(q)) ||
+        (n.tags && n.tags.some(t=>t.toLowerCase().includes(q)))
+      );
+      const el = document.getElementById('search-results');
+      el.innerHTML = '';
+      if (!q) return;
+      if (results.length === 0) {
+        el.innerHTML = `<div style="opacity:0.6;">No results.</div>`;
+        return;
+      }
+      results.slice(0,10).forEach(note => {
+        const div = document.createElement('div');
+        div.className = 'note-list-item fade-in';
+        div.innerHTML = `<div class="note-title">${note.title || 'Untitled'}</div>
+          <div class="note-snippet">${note.content ? note.content.split('\n')[0].slice(0, 50) : ''}</div>
+          <div class="note-meta">${note.fav ? '⭐ ' : ''}${note.tags && note.tags.length ? '🏷️ ' + note.tags.join(', ') : ''}</div>`;
+        div.onclick = function() {
+          openNote(note.id);
+          closeSearchModal();
+        }
+        el.appendChild(div);
+      });
+    }
+
+    // --------- MARKDOWN PREVIEW ---------
+    function renderPreview() {
+      const content = document.getElementById('note-content').value;
+      document.getElementById('preview-area').innerHTML = marked.parse(content || '');
+    }
+    function togglePreview() {
+      previewMode = !previewMode;
+      document.getElementById('preview-area').style.display = previewMode ? 'block' : 'none';
+      if (previewMode) renderPreview();
+    }
+    document.getElementById('note-content').addEventListener('input', function() {
+      if (previewMode) renderPreview();
+    });
+
+    // --------- KEYBOARD SHORTCUTS ---------
+    document.addEventListener('keydown', function(e) {
+      if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        saveNote();
+      }
+      if (e.key === 'Escape') {
+        closeTagsModal();
+        closeSearchModal();
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+        e.preventDefault();
+        showSearchModal();
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'b') {
+        e.preventDefault();
+        favoriteNote();
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
+        e.preventDefault();
+        newNote();
+      }
+    });
+
     // --------- INIT ---------
-    window.onload = function() {
-      showAllNotes();
-    };
+    // (see window.onload above)
   </script>
 </body>
 </html>
