@@ -95,8 +95,9 @@
 
       auth.createUserWithEmailAndPassword(email, password)
         .then(() => {
-          alert("Signup successful!");
-          window.location.href = "index.html";
+        alert("Signup successful!");
+        localStorage.setItem('loggedIn', 'true');
+        window.location.href = "index.html";
         })
         .catch((error) => {
           if (error.code === "auth/email-already-in-use") {
