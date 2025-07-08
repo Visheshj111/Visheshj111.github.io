@@ -72,5 +72,26 @@
       <button type="submit">Create Account</button>
     </form>
   </div>
+  <script>
+  document.getElementById("signupForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    // Check if user already exists
+    if (localStorage.getItem(email)) {
+      alert("Account already exists. Please login instead.");
+      window.location.href = "login.html";
+    } else {
+      localStorage.setItem(email, password);
+      localStorage.setItem("loggedIn", "true");
+      localStorage.setItem("userEmail", email);
+      alert("Signup successful!");
+      window.location.href = "index.html";
+    }
+  });
+</script>
+
 </body>
 </html>
