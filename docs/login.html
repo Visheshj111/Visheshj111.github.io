@@ -11,84 +11,65 @@
       background: url('bg.jpg') no-repeat center center fixed;
       background-size: cover;
       font-family: 'Rubik', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
     }
 
-    .glass-box {
+    .glass-card {
       background: rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 16px;
+      border-radius: 20px;
       padding: 2rem;
       width: 100%;
       max-width: 400px;
-      color: white;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      margin: auto;
+      color: #fff;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+      margin-top: 10vh;
     }
 
-    h2 {
+    input:focus {
+      transform: scale(1.05);
+      transition: all 0.3s ease;
+    }
+
+    input {
+      transition: transform 0.2s ease;
+    }
+
+    button {
+      background-color: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 10px 20px;
+      border-radius: 12px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background-color: rgba(255, 255, 255, 0.4);
+      transform: scale(1.05);
+    }
+
+    h1 {
       text-align: center;
       font-size: 2rem;
       margin-bottom: 1.5rem;
     }
-
-    input {
-      background-color: rgba(255, 255, 255, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: white;
-      padding: 0.75rem 1rem;
-      margin-bottom: 1rem;
-      width: 100%;
-      border-radius: 8px;
-      outline: none;
-    }
-
-    input::placeholder {
-      color: rgba(255, 255, 255, 0.6);
-    }
-
-    button {
-      background-color: rgba(255, 255, 255, 0.3);
-      padding: 0.75rem;
-      border: none;
-      color: white;
-      font-weight: bold;
-      border-radius: 8px;
-      width: 100%;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    button:hover {
-      background-color: rgba(255, 255, 255, 0.5);
-    }
-
-    .link {
-      text-align: center;
-      margin-top: 1rem;
-      color: #cbd5e1;
-    }
-
-    .link a {
-      color: #93c5fd;
-      text-decoration: underline;
-    }
   </style>
 </head>
 <body>
-  <div class="glass-box">
-    <h2>Login to bottlenotes</h2>
+  <div class="glass-card">
+    <h1>Login</h1>
     <form>
-      <input type="email" placeholder="Email" required>
-      <input type="password" placeholder="Password" required>
+      <input type="email" placeholder="Email" class="w-full mb-4 p-3 rounded-md bg-white bg-opacity-10 border border-white focus:outline-none text-white placeholder-white" />
+      <input type="password" placeholder="Password" class="w-full mb-4 p-3 rounded-md bg-white bg-opacity-10 border border-white focus:outline-none text-white placeholder-white" />
       <button type="submit">Login</button>
     </form>
-    <div class="link">Don't have an account? <a href="signup.html">Sign up</a></div>
   </div>
 </body>
 </html>
