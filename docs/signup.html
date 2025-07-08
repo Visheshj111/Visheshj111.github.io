@@ -28,13 +28,23 @@
       margin-top: 10vh;
     }
 
-    input:focus {
-      transform: scale(1.05);
+    .glass-input {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1.2rem;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 12px;
+      background-color: rgba(255,255,255,0.05);
+      color: white;
+      outline: none;
       transition: all 0.3s ease;
     }
 
-    input {
-      transition: transform 0.2s ease;
+    .glass-input:focus {
+      border-color: #7dcfff;
+      box-shadow: 0 0 12px #7dcfff99;
+      background-color: rgba(255,255,255,0.1);
+      transform: scale(1.03);
     }
 
     button {
@@ -46,7 +56,6 @@
       font-weight: bold;
       cursor: pointer;
       width: 100%;
-      margin-top: 1rem;
       transition: all 0.3s ease;
     }
 
@@ -78,34 +87,47 @@
   <div class="glass-card">
     <h1>Sign Up</h1>
     <form id="signupForm">
-      <input id="name" type="text" placeholder="Name" required class="w-full mb-4 p-3 rounded-md bg-white bg-opacity-10 border border-white focus:outline-none text-white placeholder-white" />
-      <input id="email" type="email" placeholder="Email" required class="w-full mb-4 p-3 rounded-md bg-white bg-opacity-10 border border-white focus:outline-none text-white placeholder-white" />
-      <input id="password" type="password" placeholder="Password" required class="w-full mb-4 p-3 rounded-md bg-white bg-opacity-10 border border-white focus:outline-none text-white placeholder-white" />
+      <input id="name" type="text" placeholder="Name" required class="glass-input" />
+      <input id="email" type="email" placeholder="Email" required class="glass-input" />
+      <input id="password" type="password" placeholder="Password" required class="glass-input" />
       <button type="submit">Create Account</button>
     </form>
-
     <div class="login-link">
       Already have an account? <a href="login.html">Login</a>
     </div>
   </div>
 
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
   <script>
+    const firebaseConfig = {
+      // 🔥 Replace with your Firebase config
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
     document.getElementById("signupForm").addEventListener("submit", function (e) {
       e.preventDefault();
 
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
 
-      if (localStorage.getItem(email)) {
-        alert("Account already exists. Please login instead.");
-        window.location.href = "login.html";
-      } else {
-        localStorage.setItem(email, password);
-        localStorage.setItem("loggedIn", "true");
-        localStorage.setItem("userEmail", email);
-        alert("Signup successful!");
-        window.location.href = "index.html";
-      }
+      auth.createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          alert("Signup successful!");
+          window.location.href = "index.html";
+        })
+        .catch((error) => {
+          if (error.code === "auth/email-already-in-use") {
+            alert("Email already exists! Redirecting to login...");
+            window.location.href = "login.html";
+          } else {
+            alert("Signup failed: " + error.message);
+          }
+        });
     });
   </script>
 </body>
