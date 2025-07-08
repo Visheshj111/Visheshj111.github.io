@@ -12,55 +12,55 @@
       background-size: cover;
       font-family: 'Rubik', sans-serif;
       overflow-x: hidden;
+      color: #f4f4f4;
     }
-    /* Glassmorphism base */
+    /* Dark Glassmorphism base */
     .glass {
-      background: rgba(255,255,255,0.16);
-      backdrop-filter: blur(22px) saturate(140%);
-      -webkit-backdrop-filter: blur(22px) saturate(140%);
-      border-radius: 22px;
-      border: 1.5px solid rgba(255,255,255,0.19);
-      box-shadow: 0 10px 40px rgba(0,0,0,0.22);
-      color: #fff;
+      background: rgba(24, 28, 38, 0.83);
+      backdrop-filter: blur(22px) saturate(130%);
+      -webkit-backdrop-filter: blur(22px) saturate(130%);
+      border-radius: 20px;
+      border: 1.5px solid rgba(60,60,70,0.19);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.28);
+      color: #f4f4f4;
       transition: box-shadow 0.3s cubic-bezier(.4,2,.7,.6), background 0.3s;
     }
     .glass-card {
       @apply glass;
-      padding: 2rem 1.5rem;
+      padding: 2rem 1.7rem;
       margin-bottom: 2rem;
     }
     .sidebar {
-      min-width: 240px;
-      max-width: 270px;
-      padding: 2.5rem 1rem 2rem 1.5rem;
+      min-width: 235px;
+      max-width: 260px;
+      padding: 2.6rem 1.25rem 2rem 1.7rem;
       transition: left 0.3s cubic-bezier(.4,2,.7,.6);
       position: relative;
       z-index: 10;
+      background: rgba(24, 28, 38, 0.92);
     }
     .sidebar-title {
-      font-size: 1.42rem;
+      font-size: 1.35rem;
       font-weight: 700;
-      letter-spacing: 2px;
-      margin-bottom: 1.7rem;
+      letter-spacing: 1.2px;
+      margin-bottom: 1.5rem;
       text-align: left;
-      color: #cfe4ff;
-      text-shadow: 0 0 13px rgba(0,0,0,0.14);
-      transition: color 0.2s;
+      color: #ececec;
+      text-shadow: 0 0 10px rgba(0,0,0,0.12);
       user-select: none;
     }
     .sidebar-btn, .sidebar a {
       display: flex;
       align-items: center;
-      gap: 0.65em;
       width: 100%;
       text-align: left;
       background: none;
       border: none;
-      color: #e0eaff;
+      color: #f4f4f4;
       font-weight: 500;
-      margin-bottom: 0.95rem;
-      padding: 0.67rem 1rem;
-      border-radius: 10px;
+      margin-bottom: 0.8rem;
+      padding: 0.65rem 1rem;
+      border-radius: 9px;
       transition: background 0.18s, color 0.18s, transform 0.22s;
       cursor: pointer;
       font-size: 1.04rem;
@@ -69,69 +69,67 @@
       outline: none;
     }
     .sidebar-btn.active, .sidebar a.active, .sidebar-btn:hover, .sidebar a:hover {
-      background: rgba(255,255,255,0.21);
-      color: #2472ff;
-      transform: translateX(3px) scale(1.034);
+      background: rgba(60, 68, 98, 0.22);
+      color: #fff;
+      transform: translateX(2px) scale(1.021);
     }
     .workspace-switch {
-      margin-bottom: 1.9rem;
-      margin-top: 1.2rem;
+      margin-bottom: 2.1rem;
+      margin-top: 1.1rem;
     }
     .workspace-select {
       width: 85%;
-      background: rgba(255,255,255,0.1);
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(23,24,35,0.6);
+      color: #f4f4f4;
+      border: 1px solid rgba(88,90,110,0.35);
       border-radius: 7px;
       padding: 0.4rem 0.6rem;
-      margin-left: 0.2rem;
       outline: none;
-      font-size: 1.02rem;
-      margin-bottom: 0.2rem;
+      font-size: 1.01rem;
+      margin-bottom: 0.3rem;
       transition: border 0.15s, background 0.15s;
     }
     .workspace-select:focus {
-      border-color: #82abff;
-      background: rgba(255,255,255,0.16);
+      border-color: #b0c3e0;
+      background: rgba(23,24,35,0.8);
     }
     .note-list {
-      max-height: 64vh;
+      max-height: 65vh;
       overflow-y: auto;
       margin-top: 1.3rem;
-      transition: max-height 0.3s;
       scrollbar-width: thin;
-      scrollbar-color: #69aaff #0001;
+      scrollbar-color: #3a4466 #0001;
     }
     .note-list-item {
-      background: rgba(255,255,255,0.08);
-      border-radius: 14px;
+      background: rgba(40, 43, 56, 0.20);
+      border-radius: 13px;
       margin-bottom: 0.67rem;
-      padding: 0.96rem 1.05rem 0.86rem 1.1rem;
+      padding: 0.93rem 1.07rem 0.77rem 1.15rem;
       cursor: pointer;
-      border: 1.5px solid transparent;
-      transition: background 0.18s, transform 0.25s, border 0.2s;
+      border: 1.3px solid transparent;
+      transition: background 0.17s, transform 0.22s, border 0.17s;
       position: relative;
-      animation: fadeInUp 0.42s cubic-bezier(.4,2,.7,.6);
+      animation: fadeInUp 0.34s cubic-bezier(.4,2,.7,.6);
     }
     .note-list-item.selected, .note-list-item:hover {
-      background: rgba(255,255,255,0.18);
-      border: 1.5px solid #3c77ff66;
-      color: #2472ff;
-      transform: scale(1.022) translateX(7px);
+      background: rgba(60, 68, 98, 0.22);
+      border: 1.5px solid #454b5e;
+      color: #fff;
+      transform: scale(1.017) translateX(6px);
       z-index: 2;
     }
     .note-title {
-      font-weight: 700;
-      font-size: 1.10rem;
-      margin-bottom: 0.13rem;
-      color: #fff;
+      font-weight: 600;
+      font-size: 1.11rem;
+      margin-bottom: 0.12rem;
+      color: #f7f7f7;
       letter-spacing: 0.2px;
-      transition: color 0.18s;
+      transition: color 0.15s;
     }
     .note-snippet {
-      font-size: 0.97rem;
-      color: #d9eaff;
-      opacity: 0.66;
+      font-size: 0.96rem;
+      color: #c5c8d8;
+      opacity: 0.64;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -141,7 +139,7 @@
       bottom: 7px;
       right: 18px;
       font-size: 0.75rem;
-      color: #c7e1ff99;
+      color: #b8b8c7;
       opacity: 0.7;
     }
     .editor-container {
@@ -152,40 +150,41 @@
       flex-direction: column;
       width: 100%;
       position: relative;
+      background: rgba(24, 28, 38, 0.89);
     }
     .editor-header {
       display: flex;
-      gap: 1.3rem;
+      gap: 1.25rem;
       align-items: center;
       margin-bottom: 1.1rem;
       margin-top: 0.7rem;
       flex-wrap: wrap;
     }
     .editor-title {
-      font-size: 1.28rem;
+      font-size: 1.22rem;
       font-weight: 600;
       background: transparent;
-      color: #e0eaff;
+      color: #ececec;
       border: none;
       outline: none;
       margin-left: 0.5rem;
       flex: 1;
-      transition: color 0.18s;
       border-radius: 7px;
       padding: 0.2rem 0.5rem;
       box-shadow: none;
+      transition: background 0.13s, color 0.13s;
     }
     .editor-title:focus {
-      background: rgba(255,255,255,0.09);
-      color: #2472ff;
+      background: rgba(60, 68, 98, 0.21);
+      color: #fff;
     }
     .editor-toolbar button {
-      background: rgba(255,255,255,0.13);
-      border: 1px solid rgba(255,255,255,0.15);
-      color: #2472ff;
-      font-weight: 600;
+      background: rgba(60, 68, 98, 0.14);
+      border: 1px solid rgba(88,90,110,0.18);
+      color: #ececec;
+      font-weight: 500;
       padding: 7px 16px;
-      border-radius: 10px;
+      border-radius: 9px;
       margin-right: 0.6rem;
       cursor: pointer;
       transition: background 0.14s, color 0.13s, transform 0.18s;
@@ -194,23 +193,23 @@
       box-shadow: none;
     }
     .editor-toolbar button:hover, .editor-toolbar button:focus {
-      background: rgba(255,255,255,0.23);
-      color: #0737a6;
-      transform: scale(1.06);
+      background: rgba(60, 68, 98, 0.22);
+      color: #fff;
+      transform: scale(1.05);
     }
     .editor-tags {
       display: flex;
-      gap: 0.38rem;
+      gap: 0.36rem;
       flex-wrap: wrap;
       margin-left: 0.4rem;
-      margin-top: 0.15rem;
-      margin-bottom: 0.3rem;
+      margin-top: 0.14rem;
+      margin-bottom: 0.17rem;
     }
     .tag {
-      background: rgba(255,255,255,0.23);
-      color: #3573f7;
+      background: rgba(60,68,98,0.20);
+      color: #c5c8d8;
       font-weight: 500;
-      font-size: 0.88rem;
+      font-size: 0.93rem;
       border-radius: 7px;
       padding: 3px 12px;
       margin-right: 0.2rem;
@@ -220,7 +219,7 @@
       transition: background 0.15s, color 0.18s;
     }
     .tag:hover {
-      background: #3573f7;
+      background: #525b7c;
       color: #fff;
     }
     .editor-content {
@@ -230,7 +229,7 @@
       resize: vertical;
       border: none;
       background: transparent;
-      color: #fff;
+      color: #f4f4f4;
       font-size: 1.09rem;
       font-family: inherit;
       padding: 0.5rem 0.2rem 0.5rem 0.2rem;
@@ -241,15 +240,15 @@
       transition: background 0.19s;
     }
     .editor-content:focus {
-      background: rgba(255,255,255,0.10);
-      color: #2472ff;
+      background: rgba(60, 68, 98, 0.16);
+      color: #fff;
     }
     /* Floating (+) button for new note */
     .fab {
       position: fixed;
       bottom: 34px;
       right: 32px;
-      background: linear-gradient(135deg,#3573f7 55%,#8eafff 100%);
+      background: linear-gradient(135deg,#34374a 55%,#5c6484 100%);
       color: #fff;
       font-size: 2.1rem;
       border-radius: 50%;
@@ -266,69 +265,69 @@
       outline: none;
     }
     .fab:hover {
-      background: linear-gradient(120deg,#8eafff 55%,#3573f7 100%);
+      background: linear-gradient(120deg,#5c6484 55%,#34374a 100%);
       transform: scale(1.09);
     }
     /* Animation */
     @keyframes fadeInUp {
-      from { opacity:0; transform:translateY(18px);}
+      from { opacity:0; transform:translateY(14px);}
       to { opacity:1; transform:none;}
     }
     /* Modal for tags & search */
     .modal {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(40,50,80,0.15);
+      background: rgba(20,20,28,0.36);
       display: flex;
       align-items: center; justify-content: center;
       z-index: 50;
-      animation: fadeInUp 0.2s;
+      animation: fadeInUp 0.21s;
     }
     .modal-content {
       @apply glass;
-      min-width: 320px; max-width: 90vw;
+      min-width: 320px; max-width: 92vw;
       padding: 2rem 1.4rem 1.2rem 1.4rem;
       border-radius: 18px;
-      box-shadow: 0 8px 40px #0035;
+      box-shadow: 0 8px 40px #0017;
       position: relative;
       animation: fadeInUp 0.22s;
     }
     .modal-close {
       position: absolute;
-      right: 1.35rem;
+      right: 1.3rem;
       top: 1.2rem;
       background: transparent;
       border: none;
-      color: #3573f7;
+      color: #f4f4f4;
       font-size: 1.22rem;
       cursor: pointer;
       font-weight: bold;
       opacity: 0.7;
-      transition: opacity 0.14s;
+      transition: opacity 0.13s, color 0.13s;
     }
     .modal-close:hover {
       opacity: 1;
-      color: #0737a6;
+      color: #fff;
     }
     .searchbox {
       width: 94%;
       padding: 0.7rem 1rem;
       margin-bottom: 1.4rem;
       border-radius: 9px;
-      border: 1px solid #d3e2ff44;
-      background: rgba(255,255,255,0.12);
-      color: #3573f7;
+      border: 1px solid #454b5e44;
+      background: rgba(60,68,98,0.19);
+      color: #ececec;
       font-size: 1.07rem;
       outline: none;
-      transition: border 0.17s;
+      transition: border 0.15s, background 0.13s;
     }
     .searchbox:focus {
-      border-color: #3573f7;
-      background: rgba(255,255,255,0.19);
+      border-color: #fff;
+      background: rgba(60,68,98,0.29);
     }
     /* Responsive styles */
     @media (max-width: 950px) {
-      .sidebar { min-width: 90px; max-width: 100vw; padding: 1.2rem 0.3rem;}
+      .sidebar { min-width: 90px; max-width: 100vw; padding: 1.1rem 0.7rem;}
       .main-flex { flex-direction: column; }
       .editor-container { min-height: 60vh; }
       .glass-card { padding: 1.1rem 0.6rem;}
@@ -336,22 +335,22 @@
     /* Mobile sidebar toggle */
     .sidebar-toggle {
       display: none;
-      background: rgba(255,255,255,0.13);
+      background: rgba(60,68,98,0.18);
       border: none;
-      color: #3573f7;
+      color: #ececec;
       font-size: 2.2rem;
-      padding: 0.25rem 1.3rem 0.25rem 1.1rem;
+      padding: 0.22rem 1.3rem 0.22rem 1.1rem;
       border-radius: 13px;
       position: fixed;
       top: 22px;
       left: 18px;
       z-index: 100;
       cursor: pointer;
-      box-shadow: 0 2px 14px #0035;
-      transition: background 0.18s;
+      box-shadow: 0 2px 14px #0015;
+      transition: background 0.14s;
     }
     .sidebar-toggle:hover {
-      background: rgba(255,255,255,0.32);
+      background: rgba(60,68,98,0.36);
     }
     @media (max-width: 950px) {
       .sidebar-toggle { display: block; }
@@ -362,8 +361,8 @@
         top: 0; bottom: 0;
         height: 100vh;
         z-index: 90;
-        box-shadow: 0 0 20px #003;
-        background: rgba(22,26,51,0.84);
+        box-shadow: 0 0 20px #001;
+        background: rgba(24, 28, 38, 0.98);
         transition: left 0.24s cubic-bezier(.4,2,.7,.6);
       }
       .sidebar.open {
@@ -373,11 +372,10 @@
     /* Scrollbar */
     ::-webkit-scrollbar { width: 7px; }
     ::-webkit-scrollbar-thumb {
-      background: #3573f733;
+      background: #454b5e33;
       border-radius: 6px;
     }
     ::-webkit-scrollbar-track { background: transparent; }
-    /* Animations */
     .fade-in { animation: fadeInUp 0.32s; }
   </style>
 </head>
@@ -387,7 +385,7 @@
   <div class="flex main-flex" style="min-height: 100vh;">
     <!-- Sidebar -->
     <nav class="sidebar glass" id="sidebar">
-      <div class="sidebar-title">🧊 bottlenotes</div>
+      <div class="sidebar-title">bottlenotes</div>
       <div class="workspace-switch">
         <select class="workspace-select" id="workspace-select" onchange="switchWorkspace()">
           <option value="default">Personal</option>
@@ -396,13 +394,13 @@
           <option value="archive">Archive</option>
         </select>
       </div>
-      <button class="sidebar-btn active" onclick="showAllNotes()"><span>🗒️</span> All Notes</button>
-      <button class="sidebar-btn" onclick="showFavorites()"><span>⭐</span> Favorites</button>
-      <button class="sidebar-btn" onclick="showTagsModal()"><span>🏷️</span> Tags</button>
-      <button class="sidebar-btn" onclick="showTrash()"><span>🗑️</span> Trash</button>
-      <a href="index.html" class="sidebar-btn" style="margin-top: 2.1rem;"><span>🏠</span> Home</a>
+      <button class="sidebar-btn active" onclick="showAllNotes()">All Notes</button>
+      <button class="sidebar-btn" onclick="showFavorites()">Favorites</button>
+      <button class="sidebar-btn" onclick="showTagsModal()">Tags</button>
+      <button class="sidebar-btn" onclick="showTrash()">Trash</button>
+      <a href="index.html" class="sidebar-btn" style="margin-top: 2.1rem;">Home</a>
       <div style="margin-top: 2.6rem;">
-        <button class="sidebar-btn" onclick="logout()"><span>🚪</span> Logout</button>
+        <button class="sidebar-btn" onclick="logout()">Logout</button>
       </div>
       <div class="note-list" id="note-list"></div>
     </nav>
@@ -413,18 +411,18 @@
           <input type="text" id="note-title" class="editor-title" placeholder="Untitled note..." autocomplete="off" />
           <div class="editor-tags" id="editor-tags"></div>
           <div class="editor-toolbar">
-            <button onclick="saveNote()" title="Save (Ctrl+S)">💾 Save</button>
-            <button onclick="favoriteNote()" id="fav-btn" title="Favorite">⭐</button>
-            <button onclick="showTagsModal()" title="Tags">🏷️</button>
-            <button onclick="deleteNote()" title="Delete">🗑️</button>
+            <button onclick="saveNote()" title="Save (Ctrl+S)">Save</button>
+            <button onclick="favoriteNote()" id="fav-btn" title="Favorite">☆</button>
+            <button onclick="showTagsModal()" title="Tags">Tags</button>
+            <button onclick="deleteNote()" title="Delete">Delete</button>
           </div>
         </div>
-        <textarea id="note-content" class="editor-content" placeholder="Write your note here... Use Markdown! (e.g. **bold**, # Titles, - lists)" rows="12"></textarea>
-        <div style="border-top:1px solid rgba(255,255,255,0.11);padding-top:1rem;">
-          <button onclick="togglePreview()" style="background:rgba(255,255,255,0.08);color:#3573f7;padding:6px 16px;border-radius:9px;margin-right:0.7rem;">👁️ Toggle Preview</button>
-          <button onclick="showSearchModal()" style="background:rgba(255,255,255,0.08);color:#3573f7;padding:6px 16px;border-radius:9px;">🔍 Search</button>
+        <textarea id="note-content" class="editor-content" placeholder="Write your note here... Markdown supported. (e.g. **bold**, # Titles, - lists)" rows="13"></textarea>
+        <div style="border-top:1px solid rgba(60,68,98,0.12);padding-top:1rem;">
+          <button onclick="togglePreview()" style="background:rgba(60,68,98,0.13);color:#ececec;padding:6px 16px;border-radius:9px;margin-right:0.7rem;">Toggle Preview</button>
+          <button onclick="showSearchModal()" style="background:rgba(60,68,98,0.13);color:#ececec;padding:6px 16px;border-radius:9px;">Search</button>
         </div>
-        <div id="preview-area" class="fade-in" style="display:none; margin-top:1.6rem; background:rgba(255,255,255,0.12); border-radius:13px; padding:1rem 1.2rem; color:#234;">
+        <div id="preview-area" class="fade-in" style="display:none; margin-top:1.6rem; background:rgba(60,68,98,0.17); border-radius:13px; padding:1rem 1.2rem; color:#ececec;">
           <!-- Rendered Markdown preview -->
         </div>
       </div>
@@ -437,10 +435,10 @@
   <div class="modal" id="tags-modal" style="display:none;">
     <div class="modal-content">
       <button class="modal-close" onclick="closeTagsModal()">✕</button>
-      <h3 style="color:#3573f7;font-weight:700;font-size:1.13rem;margin-bottom:1.2rem;">Manage Tags</h3>
+      <h3 style="color:#ececec;font-weight:700;font-size:1.13rem;margin-bottom:1.2rem;">Manage Tags</h3>
       <div id="tags-list" style="margin-bottom:1.2rem;"></div>
       <input type="text" id="add-tag-input" placeholder="New tag..." class="searchbox" style="margin-bottom:0.7rem;">
-      <button onclick="addTag()" style="background:#3573f7;color:#fff;padding:7px 19px;border-radius:8px;font-weight:600;font-size:1rem;">Add Tag</button>
+      <button onclick="addTag()" style="background:#454b5e;color:#fff;padding:7px 19px;border-radius:8px;font-weight:600;font-size:1rem;">Add Tag</button>
     </div>
   </div>
 
@@ -448,7 +446,7 @@
   <div class="modal" id="search-modal" style="display:none;">
     <div class="modal-content">
       <button class="modal-close" onclick="closeSearchModal()">✕</button>
-      <h3 style="color:#3573f7;font-weight:700;font-size:1.13rem;margin-bottom:1.1rem;">Search Notes</h3>
+      <h3 style="color:#ececec;font-weight:700;font-size:1.13rem;margin-bottom:1.1rem;">Search Notes</h3>
       <input type="text" id="search-input" class="searchbox" placeholder="Search by title, content, or tag..." oninput="searchNotes()">
       <div id="search-results" style="margin-top:1.2rem;max-height:220px;overflow-y:auto;"></div>
     </div>
@@ -542,7 +540,7 @@
         div.className = 'note-list-item fade-in' + (note.id===currentNoteId ? ' selected':'');
         div.innerHTML = `<div class="note-title">${note.title || 'Untitled'}</div>
           <div class="note-snippet">${note.content ? note.content.split('\n')[0].slice(0, 50) : ''}</div>
-          <div class="note-meta">${note.fav ? '⭐ ' : ''}${note.tags && note.tags.length ? '🏷️ ' + note.tags.join(', ') : ''}</div>`;
+          <div class="note-meta">${note.fav ? '★ ' : ''}${note.tags && note.tags.length ? note.tags.join(', ') : ''}</div>`;
         div.onclick = ()=>openNote(note.id);
         listEl.appendChild(div);
       }
@@ -556,7 +554,7 @@
       document.getElementById('note-title').value = note.title || '';
       document.getElementById('note-content').value = note.content || '';
       renderEditorTags(note.tags || []);
-      document.getElementById('fav-btn').innerText = note.fav ? '⭐' : '☆';
+      document.getElementById('fav-btn').innerText = note.fav ? '★' : '☆';
       renderNoteList();
       if (previewMode) renderPreview();
     }
@@ -662,7 +660,7 @@
       note.fav = !note.fav;
       note.updated = Date.now();
       saveNotes(notes);
-      document.getElementById('fav-btn').innerText = note.fav ? '⭐' : '☆';
+      document.getElementById('fav-btn').innerText = note.fav ? '★' : '☆';
       renderNoteList();
     }
 
@@ -689,8 +687,8 @@
       const addBtn = document.createElement('span');
       addBtn.className = 'tag';
       addBtn.innerText = '+ tag';
-      addBtn.style.background = 'rgba(255,255,255,0.10)';
-      addBtn.style.color = '#8eafff';
+      addBtn.style.background = 'rgba(60,68,98,0.15)';
+      addBtn.style.color = '#a3a7b7';
       addBtn.onclick = showTagsModal;
       el.appendChild(addBtn);
     }
@@ -722,7 +720,7 @@
         btn.className = 'tag';
         btn.innerText = tag;
         if (noteTags.includes(tag)) {
-          btn.style.background = '#3573f7';
+          btn.style.background = '#454b5e';
           btn.style.color = '#fff';
         }
         btn.onclick = function() {
@@ -777,7 +775,7 @@
         div.className = 'note-list-item fade-in';
         div.innerHTML = `<div class="note-title">${note.title || 'Untitled'}</div>
           <div class="note-snippet">${note.content ? note.content.split('\n')[0].slice(0, 50) : ''}</div>
-          <div class="note-meta">${note.fav ? '⭐ ' : ''}${note.tags && note.tags.length ? '🏷️ ' + note.tags.join(', ') : ''}</div>`;
+          <div class="note-meta">${note.fav ? '★ ' : ''}${note.tags && note.tags.length ? note.tags.join(', ') : ''}</div>`;
         div.onclick = function() {
           openNote(note.id);
           closeSearchModal();
