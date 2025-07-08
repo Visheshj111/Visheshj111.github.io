@@ -3,69 +3,36 @@
 <head>
   <title>AI JD to Notice Generator</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      padding: 20px;
-    }
-    textarea, pre {
-      width: 100%;
-      font-size: 16px;
-      padding: 10px;
-      margin-top: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-    }
-    button {
-      padding: 10px 20px;
-      margin-top: 15px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-    .output {
-      margin-top: 20px;
-      white-space: pre-wrap;
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-    }
+    body { font-family: Arial; padding: 20px; background: #f4f4f4; }
+    textarea, pre { width: 100%; padding: 10px; margin: 10px 0; font-size: 16px; }
+    button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #0056b3; }
+    .output { white-space: pre-wrap; background: #fff; padding: 20px; border-radius: 8px; border: 1px solid #ccc; }
   </style>
 </head>
 <body>
 
   <h2>📄 AI JD to Notice Generator</h2>
-
   <textarea id="jd" rows="15" placeholder="Paste the JD here..."></textarea>
   <br>
   <button onclick="generateNotice()">Generate with AI ✨</button>
-
   <div class="output" id="result"></div>
 
   <script>
-  async function generateNotice() {
-    const jdText = document.getElementById('jd').value;
+    async function generateNotice() {
+      const jdText = document.getElementById("jd").value;
 
-    const response = await fetch("https://placement-jd-backend-vishesh3126jang.replit.app/generate-notice", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ jd: jdText })
-    });
+      const response = await fetch("https://placement-jd-backend-vishesh3126jang.replit.app/generate-notice", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jd: jdText })
+      });
 
-    const data = await response.json();
-    const output = data.notice || "No output.";
-    document.getElementById("result").textContent = output;
-  }
-</script>
+      const data = await response.json();
+      const output = data.notice || "No output.";
+      document.getElementById("result").textContent = output;
+    }
+  </script>
 
 </body>
 </html>
