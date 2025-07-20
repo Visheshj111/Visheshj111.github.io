@@ -28,6 +28,44 @@
       color: #fff;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
       margin-top: 10vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Animated background effects */
+    .glass-card::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 15px 50px #000);
+      border-radius: 20px;
+      animation: rotating 4s linear infinite;
+      animation-delay: -1s;
+    }
+
+    .glass-card::after {
+      content: "";
+      position: absolute;
+      inset: 4px;
+      background: #2d2d39;
+      border-radius: 15px;
+      border: 8px solid #25252b;
+    }
+
+    @keyframes rotating {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Ensure content is above the animated background */
+    .glass-card > * {
+      position: relative;
+      z-index: 2;
     }
 
     input:focus {
@@ -37,6 +75,8 @@
 
     input {
       transition: transform 0.2s ease;
+      position: relative;
+      z-index: 2;
     }
 
     button {
@@ -50,6 +90,8 @@
       width: 100%;
       margin-top: 1rem;
       transition: all 0.3s ease;
+      position: relative;
+      z-index: 2;
     }
 
     button:hover {
@@ -61,6 +103,18 @@
       text-align: center;
       font-size: 2rem;
       margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    form {
+      position: relative;
+      z-index: 2;
+    }
+
+    p {
+      position: relative;
+      z-index: 2;
     }
   </style>
 </head>
@@ -95,13 +149,12 @@
 
       auth.createUserWithEmailAndPassword(email, password)
         .then(() => {
-        alert("Signup successful!");
-        localStorage.setItem('loggedIn', 'true');
-        window.location.href = "index.html";
+          alert("Signup successful!");
+          localStorage.setItem('loggedIn', 'true');
+          window.location.href = "index.html";
         })
         .catch((error) => {
           if (error.code === "auth/email-already-in-use") {
-            // Redirect to login if user already exists
             alert("Email already in use. Redirecting to login.");
             window.location.href = "login.html";
           } else {
