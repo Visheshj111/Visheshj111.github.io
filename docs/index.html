@@ -16,16 +16,17 @@
             color: #E0E0E0;
         }
 
-        /* Styles for scroll animations */
+        /* Enhanced styles for scroll animations */
         .reveal {
             opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s ease-out, transform 0.6s ease-out;
+            transform: translateY(50px) skewY(2deg);
+            transform-origin: top left;
+            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         .reveal.visible {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) skewY(0);
         }
 
         /* Staggered animation delays */
@@ -34,6 +35,7 @@
         .reveal.delay-3 { transition-delay: 300ms; }
         .reveal.delay-4 { transition-delay: 400ms; }
 
+        /* Button Glow Effect */
         .glow-button {
             position: relative;
             overflow: hidden;
@@ -61,6 +63,31 @@
             position: relative;
             z-index: 1;
         }
+
+        /* Service Card 3D Tilt Effect */
+        .service-card {
+            transition: transform 0.5s ease;
+            transform-style: preserve-3d;
+        }
+        .service-card:hover {
+            transform: perspective(1000px) rotateX(5deg) rotateY(-5deg) scale(1.05);
+        }
+
+        /* Parallax Image Styles */
+        .parallax-container {
+            overflow: hidden;
+            border-radius: 1rem; /* 16px */
+            height: 400px;
+            width: 100%;
+        }
+
+        .parallax-img {
+            width: 100%;
+            height: 130%; /* Image is taller than container to allow for vertical movement */
+            object-fit: cover;
+            /* Initial transform to center the taller image */
+            transform: translateY(-15%);
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -72,7 +99,7 @@
         <header class="fixed top-0 left-0 right-0 z-50 bg-black bg-opacity-30 backdrop-blur-lg border-b border-gray-800">
             <div class="container mx-auto px-6 py-4 flex justify-between items-center">
                 <div class="text-2xl font-bold text-white">
-                    <a href="#">Post Now!</a>
+                    <a href="#">Agency</a>
                 </div>
                 <nav class="hidden md:flex items-center space-x-8">
                     <a href="#services" class="text-gray-300 hover:text-white transition-colors">Services</a>
@@ -111,17 +138,17 @@
                 </div>
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <!-- Service Card 1 -->
-                    <div class="bg-gray-800/50 border border-gray-700 p-8 rounded-2xl reveal">
+                    <div class="bg-gray-800/50 border border-gray-700 p-8 rounded-2xl reveal service-card">
                         <h3 class="text-2xl font-bold text-white">Web Design</h3>
                         <p class="mt-3 text-gray-400">Crafting stunning, intuitive, and responsive websites that provide an exceptional user experience.</p>
                     </div>
                     <!-- Service Card 2 -->
-                    <div class="bg-gray-800/50 border border-gray-700 p-8 rounded-2xl reveal delay-1">
+                    <div class="bg-gray-800/50 border border-gray-700 p-8 rounded-2xl reveal delay-1 service-card">
                         <h3 class="text-2xl font-bold text-white">App Development</h3>
                         <p class="mt-3 text-gray-400">Building powerful and scalable mobile applications for both iOS and Android platforms.</p>
                     </div>
                     <!-- Service Card 3 -->
-                    <div class="bg-gray-800/50 border border-gray-700 p-8 rounded-2xl reveal delay-2">
+                    <div class="bg-gray-800/50 border border-gray-700 p-8 rounded-2xl reveal delay-2 service-card">
                         <h3 class="text-2xl font-bold text-white">Branding</h3>
                         <p class="mt-3 text-gray-400">Creating a strong brand identity that resonates with your target audience and sets you apart.</p>
                     </div>
@@ -137,25 +164,33 @@
                 <div class="grid md:grid-cols-2 gap-8">
                     <!-- Work Item 1 -->
                     <div class="reveal">
-                        <img src="https://placehold.co/800x600/1a1a1a/amber?text=Project+One" alt="Project One" class="rounded-2xl w-full h-auto object-cover">
+                        <div class="parallax-container">
+                            <img src="https://placehold.co/800x600/1a1a1a/amber?text=Project+One" alt="Project One" class="parallax-img">
+                        </div>
                         <h3 class="text-xl font-bold mt-4 text-white">E-commerce Platform</h3>
                         <p class="text-gray-400">Web Design</p>
                     </div>
                     <!-- Work Item 2 -->
                     <div class="reveal delay-1">
-                        <img src="https://placehold.co/800x600/1a1a1a/amber?text=Project+Two" alt="Project Two" class="rounded-2xl w-full h-auto object-cover">
+                        <div class="parallax-container">
+                             <img src="https://placehold.co/800x600/1a1a1a/amber?text=Project+Two" alt="Project Two" class="parallax-img">
+                        </div>
                         <h3 class="text-xl font-bold mt-4 text-white">Mobile Banking App</h3>
                         <p class="text-gray-400">App Development</p>
                     </div>
                      <!-- Work Item 3 -->
                     <div class="reveal">
-                        <img src="https://placehold.co/800x600/1a1a1a/amber?text=Project+Three" alt="Project Three" class="rounded-2xl w-full h-auto object-cover">
+                        <div class="parallax-container">
+                            <img src="https://placehold.co/800x600/1a1a1a/amber?text=Project+Three" alt="Project Three" class="parallax-img">
+                        </div>
                         <h3 class="text-xl font-bold mt-4 text-white">SaaS Dashboard</h3>
                         <p class="text-gray-400">Web Design</p>
                     </div>
                     <!-- Work Item 4 -->
                     <div class="reveal delay-1">
-                        <img src="https://placehold.co/800x600/1a1a1a/amber?text=Project+Four" alt="Project Four" class="rounded-2xl w-full h-auto object-cover">
+                        <div class="parallax-container">
+                            <img src="https://placehold.co/800x600/1a1a1a/amber?text=Project+Four" alt="Project Four" class="parallax-img">
+                        </div>
                         <h3 class="text-xl font-bold mt-4 text-white">Corporate Rebranding</h3>
                         <p class="text-gray-400">Branding</p>
                     </div>
@@ -203,16 +238,14 @@
     </div>
 
     <script>
-        // JavaScript for scroll animations
         document.addEventListener('DOMContentLoaded', function() {
+            // JavaScript for revealing elements on scroll
             const revealElements = document.querySelectorAll('.reveal');
 
-            const observer = new IntersectionObserver((entries) => {
+            const revealObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('visible');
-                        // Optional: unobserve the element after it has been revealed
-                        // observer.unobserve(entry.target);
                     }
                 });
             }, {
@@ -220,8 +253,39 @@
             });
 
             revealElements.forEach(elem => {
-                observer.observe(elem);
+                revealObserver.observe(elem);
             });
+
+            // JavaScript for Parallax scroll effect
+            const parallaxImages = document.querySelectorAll('.parallax-img');
+            const parallaxSpeed = 0.2; // Adjust this value to change parallax intensity
+
+            // Use requestAnimationFrame for smoother animations
+            function updateParallax() {
+                for (const img of parallaxImages) {
+                    const container = img.parentElement;
+                    const rect = container.getBoundingClientRect();
+                    
+                    // The vertical center of the viewport
+                    const screenCenter = window.innerHeight / 2;
+                    
+                    // The vertical center of the container
+                    const containerCenter = rect.top + rect.height / 2;
+                    
+                    // The distance of the container's center from the viewport's center
+                    const distanceFromCenter = screenCenter - containerCenter;
+                    
+                    // Calculate the vertical movement
+                    const moveY = distanceFromCenter * parallaxSpeed;
+                    
+                    // Apply the transform. We use a base transform of -15% to keep the taller image centered initially.
+                    img.style.transform = `translateY(calc(-15% + ${moveY}px))`;
+                }
+                requestAnimationFrame(updateParallax);
+            }
+            
+            // Start the animation loop
+            requestAnimationFrame(updateParallax);
         });
     </script>
 
