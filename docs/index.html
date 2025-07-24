@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agency - We Build Digital Products</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0F0F0F;
+            color: #E0E0E0;
+        }
+
+        /* Styles for scroll animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.6s ease-out;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Staggered animation delays */
+        .reveal.delay-1 { transition-delay: 100ms; }
+        .reveal.delay-2 { transition-delay: 200ms; }
+        .reveal.delay-3 { transition-delay: 300ms; }
+        .reveal.delay-4 { transition-delay: 400ms; }
+
+        .glow-button {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glow-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            padding-bottom: 300%;
+            background: radial-gradient(circle, rgba(255, 199, 44, 0.4) 0%, rgba(255, 199, 44, 0) 60%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.7s ease;
+            z-index: 0;
+        }
+
+        .glow-button:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .glow-button span {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Main Container -->
+    <div class="min-h-screen">
+
+        <!-- Header -->
+        <header class="fixed top-0 left-0 right-0 z-50 bg-black bg-opacity-30 backdrop-blur-lg border-b border-gray-800">
+            <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <div class="text-2xl font-bold text-white">
+                    <a href="#">Post Now!</a>
+                </div>
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#services" class="text-gray-300 hover:text-white transition-colors">Services</a>
+                    <a href="#work" class="text-gray-300 hover:text-white transition-colors">Our Work</a>
+                    <a href="#" class="text-gray-300 hover:text-white transition-colors">About</a>
+                </nav>
+                <div>
+                    <a href="#contact" class="bg-amber-400 text-black font-semibold px-5 py-2 rounded-lg hover:bg-amber-300 transition-all duration-300 glow-button">
+                        <span>Get in Touch</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <main class="pt-32 md:pt-48 pb-24">
+            <section class="container mx-auto px-6 text-center">
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white leading-tight reveal">
+                    We build <span class="text-amber-400">digital</span> products
+                </h1>
+                <p class="mt-6 max-w-2xl mx-auto text-lg md:text-xl text-gray-400 reveal delay-1">
+                    Our team of expert designers and developers creates beautiful, functional, and user-friendly websites and applications that help your business grow.
+                </p>
+                <div class="mt-10 reveal delay-2">
+                    <a href="#work" class="bg-white text-black font-bold px-8 py-4 rounded-lg hover:bg-gray-200 transition-all duration-300 text-lg">
+                        View Our Work
+                    </a>
+                </div>
+            </section>
+
+            <!-- Services Section -->
+            <section id="services" class="container mx-auto px-6 py-24 md:py-32">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold text-white reveal">Our Services</h2>
+                    <p class="mt-4 text-gray-400 max-w-xl mx-auto reveal delay-1">We offer a complete suite of services to bring your digital vision to life.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Service Card 1 -->
+                    <div class="bg-gray-800/50 border border-gray-700 p-8 rounded-2xl reveal">
+                        <h3 class="text-2xl font-bold text-white">Web Design</h3>
+                        <p class="mt-3 text-gray-400">Crafting stunning, intuitive, and responsive websites that provide an exceptional user experience.</p>
+                    </div>
+                    <!-- Service Card 2 -->
+                    <div class="bg-gray-800/50 border border-gray-700 p-8 rounded-2xl reveal delay-1">
+                        <h3 class="text-2xl font-bold text-white">App Development</h3>
+                        <p class="mt-3 text-gray-400">Building powerful and scalable mobile applications for both iOS and Android platforms.</p>
+                    </div>
+                    <!-- Service Card 3 -->
+                    <div class="bg-gray-800/50 border border-gray-700 p-8 rounded-2xl reveal delay-2">
+                        <h3 class="text-2xl font-bold text-white">Branding</h3>
+                        <p class="mt-3 text-gray-400">Creating a strong brand identity that resonates with your target audience and sets you apart.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Latest Work Section -->
+            <section id="work" class="container mx-auto px-6 py-24 md:py-32">
+                 <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold text-white reveal">Latest Work</h2>
+                    <p class="mt-4 text-gray-400 max-w-xl mx-auto reveal delay-1">Check out some of the amazing projects we've recently delivered.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Work Item 1 -->
+                    <div class="reveal">
+                        <img src="https://placehold.co/800x600/1a1a1a/amber?text=Project+One" alt="Project One" class="rounded-2xl w-full h-auto object-cover">
+                        <h3 class="text-xl font-bold mt-4 text-white">E-commerce Platform</h3>
+                        <p class="text-gray-400">Web Design</p>
+                    </div>
+                    <!-- Work Item 2 -->
+                    <div class="reveal delay-1">
+                        <img src="https://placehold.co/800x600/1a1a1a/amber?text=Project+Two" alt="Project Two" class="rounded-2xl w-full h-auto object-cover">
+                        <h3 class="text-xl font-bold mt-4 text-white">Mobile Banking App</h3>
+                        <p class="text-gray-400">App Development</p>
+                    </div>
+                     <!-- Work Item 3 -->
+                    <div class="reveal">
+                        <img src="https://placehold.co/800x600/1a1a1a/amber?text=Project+Three" alt="Project Three" class="rounded-2xl w-full h-auto object-cover">
+                        <h3 class="text-xl font-bold mt-4 text-white">SaaS Dashboard</h3>
+                        <p class="text-gray-400">Web Design</p>
+                    </div>
+                    <!-- Work Item 4 -->
+                    <div class="reveal delay-1">
+                        <img src="https://placehold.co/800x600/1a1a1a/amber?text=Project+Four" alt="Project Four" class="rounded-2xl w-full h-auto object-cover">
+                        <h3 class="text-xl font-bold mt-4 text-white">Corporate Rebranding</h3>
+                        <p class="text-gray-400">Branding</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Get in Touch Section -->
+            <section id="contact" class="container mx-auto px-6 py-24 md:py-32">
+                <div class="bg-gray-800/50 border border-gray-700 rounded-2xl p-8 md:p-16 lg:p-20 max-w-4xl mx-auto">
+                    <div class="text-center mb-12">
+                        <h2 class="text-4xl md:text-5xl font-bold text-white reveal">Get in Touch</h2>
+                        <p class="mt-4 text-gray-400 max-w-xl mx-auto reveal delay-1">Have a project in mind? We'd love to hear from you.</p>
+                    </div>
+                    <form action="#" method="POST" class="space-y-6">
+                        <div class="reveal delay-2">
+                            <label for="name" class="sr-only">Name</label>
+                            <input type="text" name="name" id="name" placeholder="Your Name" class="w-full bg-gray-900/70 border-2 border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all">
+                        </div>
+                        <div class="reveal delay-3">
+                            <label for="email" class="sr-only">Email</label>
+                            <input type="email" name="email" id="email" placeholder="Your Email" class="w-full bg-gray-900/70 border-2 border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all">
+                        </div>
+                        <div class="reveal delay-4">
+                            <label for="message" class="sr-only">Message</label>
+                            <textarea name="message" id="message" rows="5" placeholder="Your Message" class="w-full bg-gray-900/70 border-2 border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all"></textarea>
+                        </div>
+                        <div class="text-center reveal delay-4">
+                            <button type="submit" class="bg-amber-400 text-black font-bold px-8 py-3 rounded-lg hover:bg-amber-300 transition-all duration-300 text-lg glow-button">
+                                <span>Send Message</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="border-t border-gray-800">
+            <div class="container mx-auto px-6 py-8 text-center text-gray-500">
+                <p>&copy; 2025 Agency. All Rights Reserved.</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        // JavaScript for scroll animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const revealElements = document.querySelectorAll('.reveal');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        // Optional: unobserve the element after it has been revealed
+                        // observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1 // Trigger when 10% of the element is visible
+            });
+
+            revealElements.forEach(elem => {
+                observer.observe(elem);
+            });
+        });
+    </script>
+
+</body>
+</html>
