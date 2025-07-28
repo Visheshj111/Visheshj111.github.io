@@ -1,293 +1,200 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agency - We Build Digital Products</title>
+    <title>Vishesh Jangid</title>
+    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Three.js for 3D graphics -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         /* Custom styles */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0F0F0F;
-            color: #E0E0E0;
+            background-color: #0a0a0a;
+            color: #f0f0f0;
+            overflow-x: hidden; /* Prevent horizontal scroll */
         }
-
-        /* Enhanced styles for scroll animations */
-        .reveal {
-            opacity: 0;
-            transform: translateY(50px) skewY(2deg);
-            transform-origin: top left;
-            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0) skewY(0);
-        }
-
-        /* Staggered animation delays */
-        .reveal.delay-1 { transition-delay: 100ms; }
-        .reveal.delay-2 { transition-delay: 200ms; }
-        .reveal.delay-3 { transition-delay: 300ms; }
-        .reveal.delay-4 { transition-delay: 400ms; }
-
-        /* Button Glow Effect */
-        .glow-button {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .glow-button::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 300%;
-            padding-bottom: 300%;
-            background: radial-gradient(circle, rgba(255, 199, 44, 0.4) 0%, rgba(255, 199, 44, 0) 60%);
-            border-radius: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            transition: transform 0.7s ease;
-            z-index: 0;
-        }
-
-        .glow-button:hover::before {
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .glow-button span {
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Service Card 3D Tilt Effect */
-        .service-card {
-            transition: transform 0.5s ease;
-            transform-style: preserve-3d;
-        }
-        .service-card:hover {
-            transform: perspective(1000px) rotateX(5deg) rotateY(-5deg) scale(1.05);
-        }
-
-        /* Parallax Image Styles */
-        .parallax-container {
-            overflow: hidden;
-            border-radius: 1rem; /* 16px */
-            height: 400px;
+        /* Canvas styling */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: 100%;
+            z-index: -1; /* Place canvas behind content */
         }
-
-        .parallax-img {
-            width: 100%;
-            height: 130%; /* Image is taller than container to allow for vertical movement */
-            object-fit: cover;
-            /* Initial transform to center the taller image */
-            transform: translateY(-15%);
+        /* Custom class for a subtle glass-like effect on the header */
+        .glassmorphism {
+            background: rgba(10, 10, 10, 0.25);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        /* Custom glow effect for the hero text */
+        .text-glow {
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.3), 0 0 20px rgba(100, 100, 255, 0.3);
         }
     </style>
 </head>
 <body class="antialiased">
+    <!-- The 3D canvas will be rendered here -->
+    <canvas id="bg-canvas"></canvas>
 
-    <!-- Main Container -->
-    <div class="min-h-screen">
+    <!-- Main container -->
+    <div class="relative min-h-screen flex flex-col items-center justify-center p-4">
 
-        <!-- Header -->
-        <header class="fixed top-0 left-0 right-0 z-50 bg-black bg-opacity-30 backdrop-blur-lg border-b border-gray-800">
-            <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-                <div class="text-2xl font-bold text-white">
-                    <a href="#">Agency</a>
+        <!-- Header Navigation -->
+        <header class="fixed top-0 left-0 right-0 z-10 glassmorphism">
+            <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <div class="text-2xl font-bold tracking-wider text-white">
+                    VISHESH
                 </div>
-                <nav class="hidden md:flex items-center space-x-8">
-                    <a href="#services" class="text-gray-300 hover:text-white transition-colors">Services</a>
-                    <a href="#work" class="text-gray-300 hover:text-white transition-colors">Our Work</a>
-                    <a href="#" class="text-gray-300 hover:text-white transition-colors">About</a>
-                </nav>
-                <div>
-                    <a href="#contact" class="bg-amber-400 text-black font-semibold px-5 py-2 rounded-lg hover:bg-amber-300 transition-all duration-300 glow-button">
-                        <span>Get in Touch</span>
-                    </a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-gray-300 hover:text-white transition-colors duration-300">Home</a>
+                    <a href="#" class="text-gray-300 hover:text-white transition-colors duration-300">About</a>
+                    <a href="#" class="text-gray-300 hover:text-white transition-colors duration-300">Projects</a>
+                    <a href="#" class="text-gray-300 hover:text-white transition-colors duration-300">Contact</a>
                 </div>
-            </div>
+                <div class="md:hidden">
+                    <!-- Mobile menu button -->
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </div>
+            </nav>
         </header>
 
         <!-- Hero Section -->
-        <main class="pt-32 md:pt-48 pb-24">
-            <section class="container mx-auto px-6 text-center">
-                <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white leading-tight reveal">
-                    We build <span class="text-amber-400">digital</span> products
-                </h1>
-                <p class="mt-6 max-w-2xl mx-auto text-lg md:text-xl text-gray-400 reveal delay-1">
-                    Our team of expert designers and developers creates beautiful, functional, and user-friendly websites and applications that help your business grow.
-                </p>
-                <div class="mt-10 reveal delay-2">
-                    <a href="#work" class="bg-white text-black font-bold px-8 py-4 rounded-lg hover:bg-gray-200 transition-all duration-300 text-lg">
-                        View Our Work
-                    </a>
-                </div>
-            </section>
-
-            <!-- Services Section -->
-            <section id="services" class="container mx-auto px-6 py-24 md:py-32">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl md:text-5xl font-bold text-white reveal">Our Services</h2>
-                    <p class="mt-4 text-gray-400 max-w-xl mx-auto reveal delay-1">We offer a complete suite of services to bring your digital vision to life.</p>
-                </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Service Card 1 -->
-                    <div class="bg-gray-800/50 border border-gray-700 p-8 rounded-2xl reveal service-card">
-                        <h3 class="text-2xl font-bold text-white">Web Design</h3>
-                        <p class="mt-3 text-gray-400">Crafting stunning, intuitive, and responsive websites that provide an exceptional user experience.</p>
-                    </div>
-                    <!-- Service Card 2 -->
-                    <div class="bg-gray-800/50 border border-gray-700 p-8 rounded-2xl reveal delay-1 service-card">
-                        <h3 class="text-2xl font-bold text-white">App Development</h3>
-                        <p class="mt-3 text-gray-400">Building powerful and scalable mobile applications for both iOS and Android platforms.</p>
-                    </div>
-                    <!-- Service Card 3 -->
-                    <div class="bg-gray-800/50 border border-gray-700 p-8 rounded-2xl reveal delay-2 service-card">
-                        <h3 class="text-2xl font-bold text-white">Branding</h3>
-                        <p class="mt-3 text-gray-400">Creating a strong brand identity that resonates with your target audience and sets you apart.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Latest Work Section -->
-            <section id="work" class="container mx-auto px-6 py-24 md:py-32">
-                 <div class="text-center mb-16">
-                    <h2 class="text-4xl md:text-5xl font-bold text-white reveal">Latest Work</h2>
-                    <p class="mt-4 text-gray-400 max-w-xl mx-auto reveal delay-1">Check out some of the amazing projects we've recently delivered.</p>
-                </div>
-                <div class="grid md:grid-cols-2 gap-8">
-                    <!-- Work Item 1 -->
-                    <div class="reveal">
-                        <div class="parallax-container">
-                            <img src="https://placehold.co/800x600/1a1a1a/amber?text=Project+One" alt="Project One" class="parallax-img">
-                        </div>
-                        <h3 class="text-xl font-bold mt-4 text-white">E-commerce Platform</h3>
-                        <p class="text-gray-400">Web Design</p>
-                    </div>
-                    <!-- Work Item 2 -->
-                    <div class="reveal delay-1">
-                        <div class="parallax-container">
-                             <img src="https://placehold.co/800x600/1a1a1a/amber?text=Project+Two" alt="Project Two" class="parallax-img">
-                        </div>
-                        <h3 class="text-xl font-bold mt-4 text-white">Mobile Banking App</h3>
-                        <p class="text-gray-400">App Development</p>
-                    </div>
-                     <!-- Work Item 3 -->
-                    <div class="reveal">
-                        <div class="parallax-container">
-                            <img src="https://placehold.co/800x600/1a1a1a/amber?text=Project+Three" alt="Project Three" class="parallax-img">
-                        </div>
-                        <h3 class="text-xl font-bold mt-4 text-white">SaaS Dashboard</h3>
-                        <p class="text-gray-400">Web Design</p>
-                    </div>
-                    <!-- Work Item 4 -->
-                    <div class="reveal delay-1">
-                        <div class="parallax-container">
-                            <img src="https://placehold.co/800x600/1a1a1a/amber?text=Project+Four" alt="Project Four" class="parallax-img">
-                        </div>
-                        <h3 class="text-xl font-bold mt-4 text-white">Corporate Rebranding</h3>
-                        <p class="text-gray-400">Branding</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Get in Touch Section -->
-            <section id="contact" class="container mx-auto px-6 py-24 md:py-32">
-                <div class="bg-gray-800/50 border border-gray-700 rounded-2xl p-8 md:p-16 lg:p-20 max-w-4xl mx-auto">
-                    <div class="text-center mb-12">
-                        <h2 class="text-4xl md:text-5xl font-bold text-white reveal">Get in Touch</h2>
-                        <p class="mt-4 text-gray-400 max-w-xl mx-auto reveal delay-1">Have a project in mind? We'd love to hear from you.</p>
-                    </div>
-                    <form action="#" method="POST" class="space-y-6">
-                        <div class="reveal delay-2">
-                            <label for="name" class="sr-only">Name</label>
-                            <input type="text" name="name" id="name" placeholder="Your Name" class="w-full bg-gray-900/70 border-2 border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all">
-                        </div>
-                        <div class="reveal delay-3">
-                            <label for="email" class="sr-only">Email</label>
-                            <input type="email" name="email" id="email" placeholder="Your Email" class="w-full bg-gray-900/70 border-2 border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all">
-                        </div>
-                        <div class="reveal delay-4">
-                            <label for="message" class="sr-only">Message</label>
-                            <textarea name="message" id="message" rows="5" placeholder="Your Message" class="w-full bg-gray-900/70 border-2 border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all"></textarea>
-                        </div>
-                        <div class="text-center reveal delay-4">
-                            <button type="submit" class="bg-amber-400 text-black font-bold px-8 py-3 rounded-lg hover:bg-amber-300 transition-all duration-300 text-lg glow-button">
-                                <span>Send Message</span>
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </section>
-
+        <main class="text-center z-0 flex-grow flex flex-col items-center justify-center">
+            <h1 class="text-5xl md:text-8xl lg:text-9xl font-black uppercase tracking-tighter text-glow">
+                AURA
+            </h1>
+            <p class="mt-4 text-lg md:text-xl text-gray-400 max-w-2xl">
+                An immersive journey into the void. Discover stories untold and realities unseen in a universe crafted with code and creativity.
+            </p>
+            <button class="mt-8 px-8 py-3 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transform hover:scale-105 transition-all duration-300">
+                Explore Now
+            </button>
         </main>
-
-        <!-- Footer -->
-        <footer class="border-t border-gray-800">
-            <div class="container mx-auto px-6 py-8 text-center text-gray-500">
-                <p>&copy; 2025 Agency. All Rights Reserved.</p>
-            </div>
-        </footer>
-
     </div>
 
+    <!-- Another content section to demonstrate scrolling -->
+    <div class="relative bg-black py-20 md:py-32 px-4">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-4">The Next Frontier</h2>
+            <p class="text-gray-400 max-w-3xl mx-auto">
+                This is where more content about the project would go. The 3D object remains in the background, creating a persistent, stunning visual anchor as the user scrolls through the site.
+            </p>
+        </div>
+    </div>
+
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // JavaScript for revealing elements on scroll
-            const revealElements = document.querySelectorAll('.reveal');
+        // --- THREE.JS SCENE SETUP ---
+        
+        const canvas = document.getElementById('bg-canvas');
+        const scene = new THREE.Scene();
 
-            const revealObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, {
-                threshold: 0.1 // Trigger when 10% of the element is visible
-            });
+        // Camera
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
 
-            revealElements.forEach(elem => {
-                revealObserver.observe(elem);
-            });
-
-            // JavaScript for Parallax scroll effect
-            const parallaxImages = document.querySelectorAll('.parallax-img');
-            const parallaxSpeed = 0.2; // Adjust this value to change parallax intensity
-
-            // Use requestAnimationFrame for smoother animations
-            function updateParallax() {
-                for (const img of parallaxImages) {
-                    const container = img.parentElement;
-                    const rect = container.getBoundingClientRect();
-                    
-                    // The vertical center of the viewport
-                    const screenCenter = window.innerHeight / 2;
-                    
-                    // The vertical center of the container
-                    const containerCenter = rect.top + rect.height / 2;
-                    
-                    // The distance of the container's center from the viewport's center
-                    const distanceFromCenter = screenCenter - containerCenter;
-                    
-                    // Calculate the vertical movement
-                    const moveY = distanceFromCenter * parallaxSpeed;
-                    
-                    // Apply the transform. We use a base transform of -15% to keep the taller image centered initially.
-                    img.style.transform = `translateY(calc(-15% + ${moveY}px))`;
-                }
-                requestAnimationFrame(updateParallax);
-            }
-            
-            // Start the animation loop
-            requestAnimationFrame(updateParallax);
+        // Renderer
+        const renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+            alpha: true
         });
-    </script>
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
+        // --- NEW: PARTICLE GALAXY ---
+
+        let particleSystem; // To hold our particle system mesh
+
+        const createGalaxy = () => {
+            // Geometry: We'll store the position of each particle here
+            const geometry = new THREE.BufferGeometry();
+            const particleCount = 20000; // Number of stars in our galaxy
+            
+            // This array will hold the (x, y, z) coordinates for each particle
+            const positions = new Float32Array(particleCount * 3);
+
+            for(let i = 0; i < particleCount * 3; i++) {
+                // We create a sphere of particles by using random values
+                // and a bit of math to distribute them.
+                // This creates a more "galaxy-like" distribution than pure random.
+                positions[i] = (Math.random() - 0.5) * 10; 
+            }
+
+            // Set the positions attribute on the geometry
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+            // Material: How the particles will look
+            const material = new THREE.PointsMaterial({
+                size: 0.01,
+                color: 0xffffff,
+                transparent: true,
+                blending: THREE.AdditiveBlending, // Makes particles glow when they overlap
+                depthWrite: false, // Important for correct blending
+            });
+
+            // The final particle system object (a "Points" mesh)
+            particleSystem = new THREE.Points(geometry, material);
+            scene.add(particleSystem);
+        }
+
+        createGalaxy(); // Call the function to create the particles
+
+        // --- MOUSE INTERACTION (PARALLAX EFFECT) ---
+        
+        const mouse = new THREE.Vector2();
+        window.addEventListener('mousemove', (event) => {
+            mouse.x = (event.clientX / window.innerWidth) - 0.5;
+            mouse.y = (event.clientY / window.innerHeight) - 0.5;
+        });
+
+        // --- ANIMATION LOOP ---
+
+        const clock = new THREE.Clock();
+
+        const animate = () => {
+            const elapsedTime = clock.getElapsedTime();
+
+            // Animate the particle system
+            if (particleSystem) {
+                particleSystem.rotation.y = elapsedTime * 0.05; // Slow rotation
+                particleSystem.rotation.x = elapsedTime * 0.02; // Slight tilt
+            }
+
+            // Camera Parallax Effect
+            const parallaxX = mouse.x * 2;
+            const parallaxY = -mouse.y * 2;
+            camera.position.x += (parallaxX - camera.position.x) * 0.05;
+            camera.position.y += (parallaxY - camera.position.y) * 0.05;
+            camera.lookAt(scene.position);
+
+            // Render the scene
+            renderer.render(scene, camera);
+
+            // Next frame
+            window.requestAnimationFrame(animate);
+        };
+
+        // --- RESPONSIVENESS ---
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        });
+
+        // Start animation
+        animate();
+    </script>
 </body>
 </html>
