@@ -92,9 +92,9 @@
         <!-- Page Title -->
         <div class="text-center my-12">
             <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400">
-                Placement Cell Notices
+                My Notices
             </h1>
-            <p class="text-slate-400 mt-2">The latest announcements and updates from the placement office.</p>
+            <p class="text-slate-400 mt-2">The latest announcements and updates you have posted.</p>
         </div>
 
         <!-- Upload Notice Form -->
@@ -131,15 +131,13 @@
         <section id="notices-display">
             <h2 class="text-3xl font-bold text-white mb-8 text-center">Latest Notices</h2>
             <div id="notices-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Dynamic content will be injected here -->
                 <div id="loading-state" class="text-center text-slate-400 col-span-full">
-                    <p>Loading notices...</p>
+                    <p>Please log in to view your notices.</p>
                 </div>
             </div>
         </section>
     </main>
     
-    <!-- Footer -->
     <footer class="bg-[#111111] border-t border-slate-800/50 mt-16">
         <div class="container mx-auto px-4 py-8 text-center">
             <p class="text-slate-500 text-sm">&copy; 2025 Nexus Technologies Inc. All rights reserved.</p>
@@ -148,11 +146,10 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
 
-        // --- CONFIGURATION ---
         const firebaseConfig = {
             apiKey: "AIzaSyD5PutZn5DYeuMcs9Z2AbflaYGxUpD-XFw",
             authDomain: "placement-cell-7b2ec.firebaseapp.com",
@@ -162,15 +159,11 @@
             appId: "1:17277112372:web:a9a8f3513633c3c3243a61"
         };
 
-        // --- FIREBASE INITIALIZATION ---
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
         const storage = getStorage(app);
 
-        const noticesCollection = collection(db, 'notices');
-
-        // --- UI ELEMENTS ---
         const form = document.getElementById('new-notice-form');
         const noticeFileInput = document.getElementById('notice-file');
         const fileNameDisplay = document.getElementById('file-name-display');
@@ -180,28 +173,37 @@
         const uploadStatus = document.getElementById('upload-status');
         const noticesContainer = document.getElementById('notices-container');
         const loadingState = document.getElementById('loading-state');
+        
+        let currentUserId = null;
+        let noticesCollectionRef = null;
+        let unsubscribe = null;
 
-        // --- AUTHENTICATION ---
         onAuthStateChanged(auth, user => {
             if (user) {
+                currentUserId = user.uid;
+                loadingState.innerHTML = '<p>Loading notices...</p>';
+                noticesCollectionRef = collection(db, 'users', currentUserId, 'notices');
                 listenForNotices();
             } else {
-                signInAnonymously(auth).catch(error => console.error("Anonymous sign-in failed:", error));
+                currentUserId = null;
+                noticesCollectionRef = null;
+                if (unsubscribe) unsubscribe();
+                loadingState.innerHTML = '<p>Please <a href="./login.html" class="text-indigo-400 hover:underline">log in</a> to view and manage your notices.</p>';
+                noticesContainer.innerHTML = '';
+                noticesContainer.appendChild(loadingState);
             }
         });
         
-        // --- FILE INPUT CHANGE ---
         noticeFileInput.addEventListener('change', () => {
-            if (noticeFileInput.files.length > 0) {
-                fileNameDisplay.textContent = noticeFileInput.files[0].name;
-            } else {
-                fileNameDisplay.textContent = '';
-            }
+            fileNameDisplay.textContent = noticeFileInput.files.length > 0 ? noticeFileInput.files[0].name : '';
         });
 
-        // --- FORM HANDLING ---
         form.addEventListener('submit', (e) => {
             e.preventDefault();
+            if (!currentUserId) {
+                alert("You must be logged in to upload a notice.");
+                return;
+            }
             const title = form['notice-title'].value.trim();
             const file = noticeFileInput.files[0];
 
@@ -212,10 +214,10 @@
             }
         });
 
-        // --- FILE UPLOAD ---
         function uploadFile(title, file) {
             const fileId = `${Date.now()}-${file.name}`;
-            const storageRef = ref(storage, `notices/${fileId}`);
+            // User-specific storage path
+            const storageRef = ref(storage, `users/${currentUserId}/notices/${fileId}`);
             const uploadTask = uploadBytesResumable(storageRef, file);
 
             submitButton.disabled = true;
@@ -242,19 +244,19 @@
 
         async function saveNoticeToFirestore(title, originalFileName, fileId, downloadURL) {
             try {
-                await addDoc(noticesCollection, {
+                await addDoc(noticesCollectionRef, {
                     title,
                     originalFileName,
-                    fileId,
+                    fileId, // Store fileId for deletion from storage
                     downloadURL,
                     createdAt: serverTimestamp()
                 });
                 form.reset();
                 fileNameDisplay.textContent = '';
-                resetFormState();
             } catch (error) {
                 console.error("Error adding document: ", error);
                 alert("Failed to save notice details.");
+            } finally {
                 resetFormState();
             }
         }
@@ -266,14 +268,13 @@
             uploadStatus.textContent = '';
         }
 
-        // --- DATA RENDERING ---
         function renderNotices(notices) {
-            noticesContainer.innerHTML = ''; // Clear previous content
+            noticesContainer.innerHTML = '';
 
             if (notices.length === 0) {
                 const noNoticesMessage = document.createElement('div');
                 noNoticesMessage.className = 'text-center text-slate-400 col-span-full';
-                noNoticesMessage.innerHTML = '<p>No notices have been posted yet.</p>';
+                noNoticesMessage.innerHTML = '<p>You haven\'t posted any notices yet.</p>';
                 noticesContainer.appendChild(noNoticesMessage);
                 return;
             }
@@ -281,9 +282,7 @@
             notices.forEach(notice => {
                 const noticeElement = document.createElement('div');
                 noticeElement.className = 'notice-card rounded-xl p-6 flex flex-col justify-between';
-                
                 const date = notice.createdAt?.toDate ? notice.createdAt.toDate().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : 'N/A';
-
                 noticeElement.innerHTML = `
                     <div>
                         <div class="flex items-start justify-between mb-4">
@@ -300,54 +299,47 @@
                 noticesContainer.appendChild(noticeElement);
             });
 
-            // Add event listeners for the new delete buttons
             document.querySelectorAll('.delete-notice-btn').forEach(button => {
                 button.addEventListener('click', async (e) => {
                     const docId = e.currentTarget.dataset.id;
                     const fileId = e.currentTarget.dataset.fileid;
-                    if (confirm("Are you sure you want to delete this notice? This action cannot be undone.")) {
-                        await deleteNotice(docId, fileId);
-                    }
+                    await deleteNotice(docId, fileId);
                 });
             });
 
             lucide.createIcons();
         }
 
-        // --- REAL-TIME LISTENER ---
         function listenForNotices() {
-            const q = query(noticesCollection, orderBy('createdAt', 'desc'));
-            onSnapshot(q, (snapshot) => {
+            if (unsubscribe) unsubscribe();
+            if (!noticesCollectionRef) return;
+            const q = query(noticesCollectionRef, orderBy('createdAt', 'desc'));
+            unsubscribe = onSnapshot(q, (snapshot) => {
                 const notices = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 renderNotices(notices);
             }, (error) => {
                 console.error("Error fetching notices:", error);
-                noticesContainer.innerHTML = '<p class="text-red-400 col-span-full text-center">Error loading notices. Please refresh the page.</p>';
+                noticesContainer.innerHTML = '<p class="text-red-400 col-span-full text-center">Error loading notices.</p>';
             });
         }
 
-        // --- DELETE NOTICE ---
         async function deleteNotice(docId, fileId) {
+            if(!currentUserId) return;
             try {
-                // 1. Delete the file from Storage
-                const storageRef = ref(storage, `notices/${fileId}`);
+                const storageRef = ref(storage, `users/${currentUserId}/notices/${fileId}`);
                 await deleteObject(storageRef);
-
-                // 2. Delete the document from Firestore
-                await deleteDoc(doc(db, "notices", docId));
+                await deleteDoc(doc(db, "users", currentUserId, "notices", docId));
             } catch (error) {
                 console.error("Error deleting notice:", error);
                 if (error.code === 'storage/object-not-found') {
-                     // If file doesn't exist in storage, still try to delete firestore doc
-                    console.warn("File not found in storage, but attempting to delete Firestore entry.");
-                    await deleteDoc(doc(db, "notices", docId)).catch(err => console.error("Firestore delete failed after storage error:", err));
+                    console.warn("File not found in storage, deleting Firestore entry anyway.");
+                    await deleteDoc(doc(db, "users", currentUserId, "notices", docId)).catch(err => console.error("Firestore delete failed after storage error:", err));
                 } else {
-                    alert("Failed to delete notice. It may have already been removed.");
+                    alert("Failed to delete notice.");
                 }
             }
         }
         
-        // --- INITIALIZE ICONS ---
         lucide.createIcons();
     </script>
 </body>
