@@ -163,35 +163,34 @@
 
             try {
                 if (isLogin) {
-                    // Sign In
                     await signInWithEmailAndPassword(auth, email, password);
-                    window.location.href = './index.html'; // Redirect on success
                 } else {
-                    // Sign Up
                     if (password !== confirmPasswordInput.value) {
                         throw new Error("Passwords do not match.");
                     }
                     await createUserWithEmailAndPassword(auth, email, password);
-                    window.location.href = './index.html'; // Redirect on success
                 }
+                // The onAuthStateChanged listener will handle the redirect.
             } catch (error) {
                 console.error("Authentication error:", error);
                 errorMessage.textContent = error.message;
                 errorMessage.style.display = 'block';
-            } finally {
                 submitButton.disabled = false;
                 submitButton.textContent = isLogin ? 'Sign In' : 'Sign Up';
             }
         });
         
-        // Redirect if already logged in
+        // --- AUTH STATE CHANGE HANDLER ---
+        // This listener now handles all redirects reliably.
         onAuthStateChanged(auth, (user) => {
             if (user) {
+                // User is signed in.
                 // Check if we are not already on the index page to avoid a redirect loop
-                if (!window.location.pathname.endsWith('index.html')) {
-                   // window.location.href = './index.html';
+                if (!window.location.pathname.endsWith('/') && !window.location.pathname.endsWith('index.html')) {
+                   window.location.href = './index.html';
                 }
             }
+            // If user is null, they stay on the login page.
         });
 
     </script>
