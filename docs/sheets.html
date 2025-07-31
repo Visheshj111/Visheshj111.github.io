@@ -139,14 +139,14 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // --- CONFIGURATION ---
         const firebaseConfig = {
             apiKey: "AIzaSyD5PutZn5DYeuMcs9Z2AbflaYGxUpD-XFw",
             authDomain: "placement-cell-7b2ec.firebaseapp.com",
             projectId: "placement-cell-7b2ec",
-            storageBucket: "placement-cell-7b2ec.firebasestorage.app",
+            storageBucket: "placement-cell-7b2ec.appspot.com",
             messagingSenderId: "17277112372",
             appId: "1:17277112372:web:a9a8f3513633c3c3243a61"
         };
@@ -155,8 +155,9 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-
-        // Use a simple collection name for your live app
+        
+        // --- COLLECTION REFERENCE (FIXED) ---
+        // Using a simple root collection 'sheets' which is standard for standalone projects.
         const sheetsCollection = collection(db, 'sheets');
 
         // --- UI ELEMENTS ---
@@ -167,13 +168,11 @@
         // --- AUTHENTICATION ---
         onAuthStateChanged(auth, user => {
             if (user) {
-                console.log("User is signed in:", user.uid);
+                console.log("Authenticated user:", user.uid);
                 listenForSheets();
             } else {
-                console.log("User is not signed in, signing in anonymously.");
-                signInAnonymously(auth).catch(error => {
-                    console.error("Anonymous sign-in failed:", error);
-                });
+                console.log("No user found, signing in anonymously.");
+                signInAnonymously(auth).catch(error => console.error("Anonymous sign-in failed:", error));
             }
         });
 
@@ -190,11 +189,12 @@
                         name,
                         link,
                         category,
-                        createdAt: serverTimestamp() // Use server timestamp for consistency
+                        createdAt: serverTimestamp()
                     });
                     form.reset();
                 } catch (error) {
                     console.error("Error adding document: ", error);
+                    // Use a custom alert/modal in a real app instead of alert()
                     alert("Failed to add sheet. Please try again.");
                 }
             }
@@ -202,7 +202,7 @@
 
         // --- DATA RENDERING ---
         function renderSheets(sheets) {
-            sheetsContainer.innerHTML = ''; // Clear previous content
+            sheetsContainer.innerHTML = ''; // Clear previous content, including "Loading..."
 
             if (sheets.length === 0) {
                 const noSheetsMessage = document.createElement('div');
@@ -212,7 +212,6 @@
                 return;
             }
 
-            // Group sheets by category
             const groupedSheets = sheets.reduce((acc, sheet) => {
                 (acc[sheet.category] = acc[sheet.category] || []).push(sheet);
                 return acc;
@@ -233,9 +232,6 @@
                     const linksGrid = document.createElement('div');
                     linksGrid.className = 'grid md:grid-cols-2 lg:grid-cols-3 gap-4';
                     
-                    // Sort sheets within the category by name
-                    groupedSheets[category].sort((a, b) => a.name.localeCompare(b.name));
-
                     groupedSheets[category].forEach(sheet => {
                         const linkWrapper = document.createElement('a');
                         linkWrapper.href = sheet.link;
@@ -244,27 +240,26 @@
                         linkWrapper.className = 'sheet-link rounded-lg p-4 flex items-center justify-between';
                         
                         const linkContent = document.createElement('div');
-                        linkContent.className = 'flex items-center overflow-hidden';
+                        linkContent.className = 'flex items-center';
 
                         const icon = document.createElement('i');
                         icon.setAttribute('data-lucide', 'file-spreadsheet');
-                        icon.className = 'text-indigo-400 mr-3 flex-shrink-0';
+                        icon.className = 'text-indigo-400 mr-3';
                         
                         const name = document.createElement('span');
                         name.textContent = sheet.name;
-                        name.className = 'font-semibold truncate';
-                        name.title = sheet.name;
+                        name.className = 'font-semibold';
 
                         linkContent.appendChild(icon);
                         linkContent.appendChild(name);
 
                         const deleteButton = document.createElement('button');
-                        deleteButton.className = 'delete-btn text-red-500 hover:text-red-400 p-1 rounded-full flex-shrink-0';
+                        deleteButton.className = 'delete-btn text-red-500 hover:text-red-400 p-1 rounded-full';
                         deleteButton.innerHTML = '<i data-lucide="trash-2" class="w-5 h-5"></i>';
                         deleteButton.onclick = async (e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            // Replaced confirm() with a non-blocking approach for better UX in some environments
+                            // Removed confirm() as it can be unreliable. A custom modal is a better UX.
                             try {
                                 await deleteDoc(doc(db, "sheets", sheet.id));
                             } catch (error) {
@@ -285,21 +280,19 @@
              lucide.createIcons();
         }
 
-        // --- REAL-TIME LISTENER ---
+        // --- REAL-TIME LISTENER (FIXED) ---
         function listenForSheets() {
-            onSnapshot(sheetsCollection, (snapshot) => {
-                const sheets = [];
-                snapshot.forEach((doc) => {
-                    sheets.push({ id: doc.id, ...doc.data() });
-                });
+            // Added orderBy to sort by date. This may require a Firestore index.
+            const q = query(sheetsCollection, orderBy('createdAt', 'desc'));
+
+            // IMPORTANT: If this query fails, Firestore will log an error in the browser console
+            // with a link to create the required index. You must click that link and create it.
+            onSnapshot(q, (snapshot) => {
+                const sheets = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 renderSheets(sheets);
             }, (error) => {
                 console.error("Error fetching sheets:", error);
-                sheetsContainer.innerHTML = '';
-                const errorMessage = document.createElement('div');
-                errorMessage.className = 'text-center text-red-400';
-                errorMessage.innerHTML = '<p>Error loading sheets. Please check console and refresh the page.</p>';
-                sheetsContainer.appendChild(errorMessage);
+                sheetsContainer.innerHTML = '<p class="text-red-400 text-center">Error loading sheets. Please check the browser console for details.</p>';
             });
         }
         
