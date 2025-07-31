@@ -83,9 +83,9 @@
         <!-- Page Title -->
         <div class="text-center my-12">
             <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400">
-                University Sheets
+                My Sheets
             </h1>
-            <p class="text-slate-400 mt-2">A central repository for all important sheets and documents.</p>
+            <p class="text-slate-400 mt-2">A central repository for all your important sheets and documents.</p>
         </div>
 
         <!-- Add New Sheet Form -->
@@ -121,15 +121,13 @@
         <!-- Sheets Display Section -->
         <section id="sheets-display">
             <div id="sheets-container" class="space-y-12">
-                <!-- Dynamic content will be injected here -->
                 <div id="loading-state" class="text-center text-slate-400">
-                    <p>Loading sheets...</p>
+                    <p>Please log in to view your sheets.</p>
                 </div>
             </div>
         </section>
     </main>
     
-    <!-- Footer -->
     <footer class="bg-[#111111] border-t border-slate-800/50 mt-16">
         <div class="container mx-auto px-4 py-8 text-center">
             <p class="text-slate-500 text-sm">&copy; 2025 Nexus Technologies Inc. All rights reserved.</p>
@@ -138,10 +136,9 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // --- CONFIGURATION ---
         const firebaseConfig = {
             apiKey: "AIzaSyD5PutZn5DYeuMcs9Z2AbflaYGxUpD-XFw",
             authDomain: "placement-cell-7b2ec.firebaseapp.com",
@@ -151,41 +148,49 @@
             appId: "1:17277112372:web:a9a8f3513633c3c3243a61"
         };
 
-        // --- FIREBASE INITIALIZATION ---
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        
-        // --- COLLECTION REFERENCE (FIXED) ---
-        // Using a simple root collection 'sheets' which is standard for standalone projects.
-        const sheetsCollection = collection(db, 'sheets');
 
-        // --- UI ELEMENTS ---
         const form = document.getElementById('new-sheet-form');
         const sheetsContainer = document.getElementById('sheets-container');
         const loadingState = document.getElementById('loading-state');
+        
+        let currentUserId = null;
+        let sheetsCollectionRef = null;
+        let unsubscribe = null; // To store the onSnapshot listener
 
-        // --- AUTHENTICATION ---
         onAuthStateChanged(auth, user => {
             if (user) {
-                console.log("Authenticated user:", user.uid);
+                currentUserId = user.uid;
+                loadingState.innerHTML = '<p>Loading sheets...</p>';
+                // Set up user-specific collection reference
+                sheetsCollectionRef = collection(db, 'users', currentUserId, 'sheets');
                 listenForSheets();
             } else {
-                console.log("No user found, signing in anonymously.");
-                signInAnonymously(auth).catch(error => console.error("Anonymous sign-in failed:", error));
+                currentUserId = null;
+                sheetsCollectionRef = null;
+                if (unsubscribe) unsubscribe(); // Detach the old listener
+                loadingState.innerHTML = '<p>Please <a href="./login.html" class="text-indigo-400 hover:underline">log in</a> to view and manage your sheets.</p>';
+                sheetsContainer.innerHTML = '';
+                sheetsContainer.appendChild(loadingState);
             }
         });
 
-        // --- FORM HANDLING ---
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
+            if (!currentUserId || !sheetsCollectionRef) {
+                alert("You must be logged in to add a sheet.");
+                return;
+            }
+
             const name = form['sheet-name'].value.trim();
             const link = form['sheet-link'].value.trim();
             const category = form['sheet-category'].value;
 
             if (name && link && category) {
                 try {
-                    await addDoc(sheetsCollection, {
+                    await addDoc(sheetsCollectionRef, {
                         name,
                         link,
                         category,
@@ -194,20 +199,18 @@
                     form.reset();
                 } catch (error) {
                     console.error("Error adding document: ", error);
-                    // Use a custom alert/modal in a real app instead of alert()
                     alert("Failed to add sheet. Please try again.");
                 }
             }
         });
 
-        // --- DATA RENDERING ---
         function renderSheets(sheets) {
-            sheetsContainer.innerHTML = ''; // Clear previous content, including "Loading..."
+            sheetsContainer.innerHTML = ''; 
 
             if (sheets.length === 0) {
                 const noSheetsMessage = document.createElement('div');
                 noSheetsMessage.className = 'text-center text-slate-400';
-                noSheetsMessage.innerHTML = '<p>No sheets have been added yet. Be the first!</p>';
+                noSheetsMessage.innerHTML = '<p>You haven\'t added any sheets yet. Use the form above to get started!</p>';
                 sheetsContainer.appendChild(noSheetsMessage);
                 return;
             }
@@ -223,12 +226,10 @@
                  if (groupedSheets[category]) {
                     const categorySection = document.createElement('div');
                     categorySection.className = 'mb-8';
-
                     const categoryTitle = document.createElement('h3');
                     categoryTitle.className = 'text-2xl font-bold text-white mb-4 border-b-2 border-slate-700 pb-2';
                     categoryTitle.textContent = category;
                     categorySection.appendChild(categoryTitle);
-
                     const linksGrid = document.createElement('div');
                     linksGrid.className = 'grid md:grid-cols-2 lg:grid-cols-3 gap-4';
                     
@@ -238,41 +239,33 @@
                         linkWrapper.target = '_blank';
                         linkWrapper.rel = 'noopener noreferrer';
                         linkWrapper.className = 'sheet-link rounded-lg p-4 flex items-center justify-between';
-                        
                         const linkContent = document.createElement('div');
                         linkContent.className = 'flex items-center';
-
                         const icon = document.createElement('i');
                         icon.setAttribute('data-lucide', 'file-spreadsheet');
                         icon.className = 'text-indigo-400 mr-3';
-                        
                         const name = document.createElement('span');
                         name.textContent = sheet.name;
                         name.className = 'font-semibold';
-
                         linkContent.appendChild(icon);
                         linkContent.appendChild(name);
-
                         const deleteButton = document.createElement('button');
                         deleteButton.className = 'delete-btn text-red-500 hover:text-red-400 p-1 rounded-full';
                         deleteButton.innerHTML = '<i data-lucide="trash-2" class="w-5 h-5"></i>';
                         deleteButton.onclick = async (e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            // Removed confirm() as it can be unreliable. A custom modal is a better UX.
                             try {
-                                await deleteDoc(doc(db, "sheets", sheet.id));
+                                await deleteDoc(doc(db, 'users', currentUserId, 'sheets', sheet.id));
                             } catch (error) {
                                 console.error("Error deleting document:", error);
                                 alert("Failed to delete sheet.");
                             }
                         };
-
                         linkWrapper.appendChild(linkContent);
                         linkWrapper.appendChild(deleteButton);
                         linksGrid.appendChild(linkWrapper);
                     });
-
                     categorySection.appendChild(linksGrid);
                     sheetsContainer.appendChild(categorySection);
                  }
@@ -280,23 +273,20 @@
              lucide.createIcons();
         }
 
-        // --- REAL-TIME LISTENER (FIXED) ---
         function listenForSheets() {
-            // Added orderBy to sort by date. This may require a Firestore index.
-            const q = query(sheetsCollection, orderBy('createdAt', 'desc'));
+            if (unsubscribe) unsubscribe(); // Detach any existing listener
+            if (!sheetsCollectionRef) return;
 
-            // IMPORTANT: If this query fails, Firestore will log an error in the browser console
-            // with a link to create the required index. You must click that link and create it.
-            onSnapshot(q, (snapshot) => {
+            const q = query(sheetsCollectionRef, orderBy('createdAt', 'desc'));
+            unsubscribe = onSnapshot(q, (snapshot) => {
                 const sheets = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 renderSheets(sheets);
             }, (error) => {
                 console.error("Error fetching sheets:", error);
-                sheetsContainer.innerHTML = '<p class="text-red-400 text-center">Error loading sheets. Please check the browser console for details.</p>';
+                sheetsContainer.innerHTML = '<p class="text-red-400 text-center">Error loading sheets. Please check the browser console.</p>';
             });
         }
         
-        // --- INITIALIZE ICONS ---
         lucide.createIcons();
     </script>
 </body>
