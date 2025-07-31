@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - The Future of Your College</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0A0A0A;
+            color: #E2E8F0;
+        }
+        .hero-gradient {
+            background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(120, 119, 198, 0.3), rgba(255, 255, 255, 0));
+        }
+        .feature-card {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(17, 17, 17, 0.5);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+            background: rgba(27, 27, 27, 0.8);
+        }
+        .glow-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            filter: blur(150px);
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, rgba(99, 102, 241, 0) 60%);
+        }
+        .testimonial-card {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #111111;
+        }
+        .scroll-animation {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .scroll-animation.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-lg border-b border-slate-800/50">
+        <div class="container mx-auto px-4">
+            <nav class="flex items-center justify-between h-20">
+                <a href="#" class="flex items-center space-x-2">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-indigo-400">
+                        <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 7L12 12L22 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 22V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="text-xl font-bold text-slate-200">Nexus</span>
+                </a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#features" class="text-slate-400 hover:text-white transition-colors">Features</a>
+                    <a href="#how-it-works" class="text-slate-400 hover:text-white transition-colors">How It Works</a>
+                    <a href="#testimonials" class="text-slate-400 hover:text-white transition-colors">Testimonials</a>
+                    <a href="#contact" class="text-slate-400 hover:text-white transition-colors">Contact</a>
+                </div>
+                <a href="#" class="hidden md:inline-block bg-indigo-500 text-white font-semibold px-5 py-2 rounded-lg hover:bg-indigo-600 transition-all duration-300">Request a Demo</a>
+                <button class="md:hidden text-slate-400" id="mobile-menu-button">
+                    <i data-lucide="menu"></i>
+                </button>
+            </nav>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-4 space-y-2">
+            <a href="#features" class="block text-slate-400 hover:text-white transition-colors">Features</a>
+            <a href="#how-it-works" class="block text-slate-400 hover:text-white transition-colors">How It Works</a>
+            <a href="#testimonials" class="block text-slate-400 hover:text-white transition-colors">Testimonials</a>
+            <a href="#contact" class="block text-slate-400 hover:text-white transition-colors">Contact</a>
+            <a href="#" class="block bg-indigo-500 text-white font-semibold px-5 py-2 rounded-lg hover:bg-indigo-600 transition-all duration-300 mt-2">Request a Demo</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="relative pt-48 pb-32 text-center hero-gradient overflow-hidden">
+            <div class="container mx-auto px-4 relative z-10">
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-64" style="background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.2) 0%, rgba(99, 102, 241, 0) 70%); z-index: -1;"></div>
+                <h1 class="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400 leading-tight md:leading-snug mb-6">
+                    The Operating System for Your University
+                </h1>
+                <p class="max-w-3xl mx-auto text-lg md:text-xl text-slate-400 mb-10">
+                    Nexus integrates your entire campus into one seamless, intelligent platform. From academics to social life, we empower students and faculty like never before.
+                </p>
+                <div class="flex justify-center items-center space-x-4">
+                    <a href="#" class="bg-indigo-500 text-white font-semibold px-8 py-4 rounded-lg hover:bg-indigo-600 transition-all duration-300 shadow-lg shadow-indigo-500/20">Get Started</a>
+                    <a href="#" class="bg-slate-700/50 text-white font-semibold px-8 py-4 rounded-lg hover:bg-slate-700 transition-all duration-300 border border-slate-600">Learn More</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="py-24">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16 scroll-animation">
+                    <h2 class="text-4xl font-bold text-white mb-4">A Unified Campus Experience</h2>
+                    <p class="text-slate-400 max-w-2xl mx-auto">Everything your institution needs, connected in one place. Intelligent, intuitive, and built for the future of education.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="feature-card p-8 rounded-2xl scroll-animation">
+                        <div class="bg-indigo-500/10 text-indigo-400 w-12 h-12 rounded-lg flex items-center justify-center mb-6">
+                            <i data-lucide="file-spreadsheet"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Access All Sheets</h3>
+                        <p class="text-slate-400">A single place to access all your documents, spreadsheets, and presentations. Seamlessly integrated.</p>
+                    </div>
+                    <!-- Feature 2 -->
+                    <div class="feature-card p-8 rounded-2xl scroll-animation" style="transition-delay: 100ms;">
+                        <div class="bg-indigo-500/10 text-indigo-400 w-12 h-12 rounded-lg flex items-center justify-center mb-6">
+                            <i data-lucide="users"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Connected Community</h3>
+                        <p class="text-slate-400">Dynamic student directories, event calendars, and club management tools to foster campus life.</p>
+                    </div>
+                    <!-- Feature 3 -->
+                    <div class="feature-card p-8 rounded-2xl scroll-animation" style="transition-delay: 200ms;">
+                        <div class="bg-indigo-500/10 text-indigo-400 w-12 h-12 rounded-lg flex items-center justify-center mb-6">
+                            <i data-lucide="layout-grid"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Campus Resources Hub</h3>
+                        <p class="text-slate-400">Centralized access to library services, dining hall menus, campus maps, and facility bookings.</p>
+                    </div>
+                    <!-- Feature 4 -->
+                    <div class="feature-card p-8 rounded-2xl scroll-animation" style="transition-delay: 300ms;">
+                        <div class="bg-indigo-500/10 text-indigo-400 w-12 h-12 rounded-lg flex items-center justify-center mb-6">
+                            <i data-lucide="message-square-text"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Seamless Communication</h3>
+                        <p class="text-slate-400">Instant messaging for faculty and students, university-wide announcements, and targeted notifications.</p>
+                    </div>
+                    <!-- Feature 5 -->
+                    <div class="feature-card p-8 rounded-2xl scroll-animation" style="transition-delay: 400ms;">
+                        <div class="bg-indigo-500/10 text-indigo-400 w-12 h-12 rounded-lg flex items-center justify-center mb-6">
+                            <i data-lucide="briefcase"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Career Development</h3>
+                        <p class="text-slate-400">Integrated job boards, alumni networking, and internship matching powered by machine learning.</p>
+                    </div>
+                    <!-- Feature 6 -->
+                    <div class="feature-card p-8 rounded-2xl scroll-animation" style="transition-delay: 500ms;">
+                        <div class="bg-indigo-500/10 text-indigo-400 w-12 h-12 rounded-lg flex items-center justify-center mb-6">
+                            <i data-lucide="shield-check"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Secure & Reliable</h3>
+                        <p class="text-slate-400">State-of-the-art security protocols to protect student data, with 99.9% uptime guaranteed.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How it Works Section -->
+        <section id="how-it-works" class="py-24 bg-[#111111] relative overflow-hidden">
+            <div class="glow-effect"></div>
+            <div class="container mx-auto px-4 relative z-10">
+                <div class="text-center mb-16 scroll-animation">
+                    <h2 class="text-4xl font-bold text-white mb-4">Effortless Integration in 3 Steps</h2>
+                    <p class="text-slate-400 max-w-2xl mx-auto">Get your entire campus online with Nexus in record time. Our streamlined process ensures a smooth transition.</p>
+                </div>
+                <div class="relative">
+                    <!-- The connecting line -->
+                    <div class="hidden lg:block absolute top-1/2 left-0 w-full h-0.5 bg-slate-700 -translate-y-1/2"></div>
+                    
+                    <div class="grid lg:grid-cols-3 gap-12 relative">
+                        <!-- Step 1 -->
+                        <div class="text-center scroll-animation">
+                            <div class="relative inline-block">
+                                <div class="w-20 h-20 bg-slate-800 rounded-full flex items-center justify-center text-2xl font-bold text-indigo-400 border-2 border-slate-700">01</div>
+                                <div class="hidden lg:block absolute top-1/2 left-full w-12 h-0.5 bg-indigo-400"></div>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mt-6 mb-3">Consult & Customize</h3>
+                            <p class="text-slate-400">We work with you to understand your institution's unique needs and tailor the Nexus platform to match.</p>
+                        </div>
+                        <!-- Step 2 -->
+                        <div class="text-center scroll-animation" style="transition-delay: 200ms;">
+                            <div class="relative inline-block">
+                                <div class="w-20 h-20 bg-slate-800 rounded-full flex items-center justify-center text-2xl font-bold text-indigo-400 border-2 border-slate-700">02</div>
+                                 <div class="hidden lg:block absolute top-1/2 right-full w-12 h-0.5 bg-indigo-400"></div>
+                                <div class="hidden lg:block absolute top-1/2 left-full w-12 h-0.5 bg-indigo-400"></div>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mt-6 mb-3">Data Migration</h3>
+                            <p class="text-slate-400">Our team securely migrates your existing student, faculty, and course data into the Nexus ecosystem.</p>
+                        </div>
+                        <!-- Step 3 -->
+                        <div class="text-center scroll-animation" style="transition-delay: 400ms;">
+                            <div class="relative inline-block">
+                                <div class="w-20 h-20 bg-slate-800 rounded-full flex items-center justify-center text-2xl font-bold text-indigo-400 border-2 border-slate-700">03</div>
+                                <div class="hidden lg:block absolute top-1/2 right-full w-12 h-0.5 bg-indigo-400"></div>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mt-6 mb-3">Launch & Support</h3>
+                            <p class="text-slate-400">We handle the full launch and provide ongoing 24/7 support to ensure your campus thrives.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="py-24">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16 scroll-animation">
+                    <h2 class="text-4xl font-bold text-white mb-4">Trusted by Leading Institutions</h2>
+                    <p class="text-slate-400 max-w-2xl mx-auto">See what administrators and students are saying about Nexus.</p>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <!-- Testimonial 1 -->
+                    <div class="testimonial-card p-8 rounded-2xl scroll-animation">
+                        <p class="text-slate-300 text-lg mb-6">"Nexus has revolutionized how we operate. Communication is streamlined, and our students are more engaged than ever. It's the single best investment we've made in campus technology."</p>
+                        <div class="flex items-center">
+                            <img src="https://placehold.co/48x48/6366F1/FFFFFF?text=AD" alt="Admin" class="w-12 h-12 rounded-full mr-4">
+                            <div>
+                                <p class="font-bold text-white">Dr. Alisha Vance</p>
+                                <p class="text-slate-400">Dean of Students, Crestwood University</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial 2 -->
+                    <div class="testimonial-card p-8 rounded-2xl scroll-animation" style="transition-delay: 200ms;">
+                        <p class="text-slate-300 text-lg mb-6">"As a student, I can't imagine college without Nexus. All my classes, clubs, and campus events are in one app. It makes managing my schedule so much easier and helps me feel connected."</p>
+                        <div class="flex items-center">
+                            <img src="https://placehold.co/48x48/EC4899/FFFFFF?text=SP" alt="Student" class="w-12 h-12 rounded-full mr-4">
+                            <div>
+                                <p class="font-bold text-white">Samuel Peters</p>
+                                <p class="text-slate-400">Computer Science, Class of '26</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section id="contact" class="py-24">
+            <div class="container mx-auto px-4">
+                <div class="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl p-12 text-center relative overflow-hidden scroll-animation">
+                     <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/grid.png')] opacity-10"></div>
+                    <h2 class="text-4xl font-bold text-white mb-4">Ready to Transform Your Campus?</h2>
+                    <p class="text-indigo-100 max-w-2xl mx-auto mb-8">Schedule a personalized demo with one of our specialists to see how Nexus can empower your institution.</p>
+                    <a href="#" class="bg-white text-indigo-600 font-bold px-8 py-4 rounded-lg hover:bg-slate-100 transition-all duration-300 shadow-lg">Request a Demo</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#111111] border-t border-slate-800/50">
+        <div class="container mx-auto px-4 py-16">
+            <div class="grid md:grid-cols-4 lg:grid-cols-5 gap-8">
+                <div class="lg:col-span-2 mb-8 md:mb-0">
+                     <a href="#" class="flex items-center space-x-2 mb-4">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-indigo-400">
+                            <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M2 7L12 12L22 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 22V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span class="text-xl font-bold text-slate-200">Nexus</span>
+                    </a>
+                    <p class="text-slate-400 max-w-xs">The intelligent operating system for the modern university.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">Product</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#features" class="text-slate-400 hover:text-indigo-400 transition">Features</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-indigo-400 transition">Security</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-indigo-400 transition">Pricing</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-indigo-400 transition">Integrations</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">Company</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-slate-400 hover:text-indigo-400 transition">About Us</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-indigo-400 transition">Careers</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-indigo-400 transition">Blog</a></li>
+                        <li><a href="#contact" class="text-slate-400 hover:text-indigo-400 transition">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">Legal</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-slate-400 hover:text-indigo-400 transition">Privacy Policy</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-indigo-400 transition">Terms of Service</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-indigo-400 transition">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-16 pt-8 border-t border-slate-800/50 flex flex-col sm:flex-row justify-between items-center">
+                <p class="text-slate-500 text-sm mb-4 sm:mb-0">&copy; 2025 Nexus Technologies Inc. All rights reserved.</p>
+                <div class="flex space-x-5">
+                    <a href="#" class="text-slate-500 hover:text-indigo-400 transition"><i data-lucide="twitter"></i></a>
+                    <a href="#" class="text-slate-500 hover:text-indigo-400 transition"><i data-lucide="linkedin"></i></a>
+                    <a href="#" class="text-slate-500 hover:text-indigo-400 transition"><i data-lucide="github"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Scroll animations
+        const scrollAnimations = document.querySelectorAll('.scroll-animation');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        scrollAnimations.forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                // Close mobile menu on link click
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

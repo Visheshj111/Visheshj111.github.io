@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - Notice Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Libraries for DOCX generation and saving -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0A0A0A;
+            color: #E2E8F0;
+        }
+        .form-input, .form-select, .form-textarea {
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            color: #E2E8F0;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #6366F1;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5);
+        }
+        .form-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.75rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+        .form-section {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #111111;
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header class="sticky top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-lg border-b border-slate-800/50">
+        <div class="container mx-auto px-4">
+            <nav class="flex items-center justify-between h-20">
+                <a href="./index.html" class="flex items-center space-x-2">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-indigo-400">
+                        <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 7L12 12L22 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 22V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="text-xl font-bold text-slate-200">Nexus</span>
+                </a>
+                <a href="./index.html" class="bg-slate-700/50 text-white font-semibold px-5 py-2 rounded-lg hover:bg-slate-700 transition-all duration-300 border border-slate-600">
+                    Back to Home
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-12">
+        <!-- Page Title -->
+        <div class="text-center my-12">
+            <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400">
+                Notice Generator
+            </h1>
+            <p class="text-slate-400 mt-2">Create and download standardized placement notices as Word documents.</p>
+        </div>
+
+        <!-- Notice Form -->
+        <form id="notice-form" class="max-w-4xl mx-auto space-y-8">
+            
+            <!-- Basic Info Section -->
+            <div class="form-section">
+                <h2 class="text-xl font-bold text-white mb-6">Basic Information</h2>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div>
+                        <label for="notice-date" class="block text-sm font-medium text-slate-300 mb-2">Notice Date</label>
+                        <input type="date" id="notice-date" required class="form-input w-full">
+                    </div>
+                    <div>
+                        <label for="notice-type" class="block text-sm font-medium text-slate-300 mb-2">Notice Type</label>
+                        <select id="notice-type" required class="form-select w-full">
+                            <option>FINAL PLACEMENT</option>
+                            <option>INTERNSHIP</option>
+                            <option>FINAL PLACEMENT AND INTERNSHIP</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="batch" class="block text-sm font-medium text-slate-300 mb-2">Batch</label>
+                        <select id="batch" required class="form-select w-full">
+                            <option>2025</option>
+                            <option>2026</option>
+                            <option>2027</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Company Details Section -->
+            <div class="form-section">
+                <h2 class="text-xl font-bold text-white mb-6">Company & Role Details</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <input type="text" id="company-name" placeholder="Company Name" required class="form-input">
+                    <input type="text" id="job-role" placeholder="Job Role" required class="form-input">
+                    <input type="text" id="eligibility" placeholder="Eligibility (e.g., All Branches)" required class="form-input">
+                    <input type="text" id="salary" placeholder="Salary/Stipend" required class="form-input">
+                    <input type="text" id="ppo" placeholder="PPO (e.g., Yes, based on performance)" required class="form-input">
+                    <input type="text" id="location" placeholder="Location" required class="form-input">
+                    <input type="text" id="work-mode" placeholder="Work mode (e.g., Work from Office)" required class="form-input">
+                    <input type="text" id="working-days" placeholder="Working days (e.g., 5 days a week)" required class="form-input">
+                    <input type="text" id="working-hours" placeholder="Working Hours (e.g., 9 hours)" required class="form-input">
+                    <input type="text" id="employment-type" placeholder="Type of Employment (e.g., Full-time)" required class="form-input">
+                    <div class="md:col-span-2">
+                        <select id="drive-type" required class="form-select w-full">
+                            <option value="" disabled selected>Select Drive Type</option>
+                            <option>Walk-in</option>
+                            <option>On Campus</option>
+                            <option>Virtual</option>
+                        </select>
+                    </div>
+                    <textarea id="hiring-process" placeholder="Hiring Process (e.g., 1. Online Test 2. Technical Interview...)" required class="form-textarea md:col-span-2" rows="4"></textarea>
+                </div>
+            </div>
+
+            <!-- Detailed Descriptions Section -->
+            <div class="form-section">
+                <h2 class="text-xl font-bold text-white mb-6">Detailed Descriptions</h2>
+                <div class="space-y-6">
+                    <textarea id="roles-responsibilities" placeholder="Roles & Responsibilities" required class="form-textarea w-full" rows="6"></textarea>
+                    <textarea id="eligibility-criteria" placeholder="Detailed Eligibility Criteria" required class="form-textarea w-full" rows="6"></textarea>
+                    <textarea id="about-company" placeholder="About Company" required class="form-textarea w-full" rows="6"></textarea>
+                    <input type="url" id="company-website" placeholder="Company Website URL" required class="form-input w-full">
+                </div>
+            </div>
+            
+            <!-- Registration Details Section -->
+            <div class="form-section">
+                <h2 class="text-xl font-bold text-white mb-6">Student Registration</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="deadline-date" class="block text-sm font-medium text-slate-300 mb-2">Registration Deadline Date</label>
+                        <input type="date" id="deadline-date" required class="form-input w-full">
+                    </div>
+                    <div>
+                        <label for="deadline-time" class="block text-sm font-medium text-slate-300 mb-2">Registration Deadline Time</label>
+                        <input type="time" id="deadline-time" required class="form-input w-full">
+                    </div>
+                    <input type="url" id="google-form-link" placeholder="Google Forms Link" required class="form-input md:col-span-2">
+                    <input type="url" id="whatsapp-link" placeholder="WhatsApp Group Link" required class="form-input md:col-span-2">
+                </div>
+            </div>
+
+            <!-- Coordinators Section -->
+            <div class="form-section">
+                <h2 class="text-xl font-bold text-white mb-6">Placement Coordinators</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <input type="text" id="coordinator1-name" placeholder="Coordinator 1 Name" required class="form-input">
+                    <input type="text" id="coordinator1-number" placeholder="Coordinator 1 Number" required class="form-input">
+                    <input type="text" id="coordinator2-name" placeholder="Coordinator 2 Name" required class="form-input">
+                    <input type="text" id="coordinator2-number" placeholder="Coordinator 2 Number" required class="form-input">
+                </div>
+            </div>
+
+            <!-- Generate Button -->
+            <div class="text-center pt-4">
+                <button type="submit" class="w-full max-w-md bg-indigo-500 text-white font-semibold px-8 py-4 rounded-lg hover:bg-indigo-600 transition-all duration-300 shadow-lg shadow-indigo-500/20 flex items-center justify-center mx-auto">
+                    <i data-lucide="file-down" class="mr-2"></i>
+                    Generate & Download Notice
+                </button>
+            </div>
+        </form>
+    </main>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Set default date for date inputs
+        document.getElementById('notice-date').valueAsDate = new Date();
+        document.getElementById('deadline-date').valueAsDate = new Date();
+
+        const form = document.getElementById('notice-form');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            generateDocument();
+        });
+
+        function getOrdinal(n) {
+            const s = ["th", "st", "nd", "rd"];
+            const v = n % 100;
+            return n + (s[(v - 20) % 10] || s[v] || s[0]);
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            const day = getOrdinal(date.getDate());
+            const month = date.toLocaleString('default', { month: 'long' });
+            const year = date.getFullYear();
+            return `${day} ${month} ${year}`;
+        }
+        
+        function formatTime(timeString) {
+            if (!timeString) return '';
+            const [hours, minutes] = timeString.split(':');
+            const h = parseInt(hours, 10);
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            const formattedHour = h % 12 || 12;
+            return `${formattedHour}:${minutes} ${ampm}`;
+        }
+
+        function generateDocument() {
+            try {
+                // When using the UMD script, the library is available on the window object
+                const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } = window.docx;
+
+                // Safely get all form values
+                const noticeDateValue = document.getElementById('notice-date').value;
+                const deadlineDateValue = document.getElementById('deadline-date').value;
+                const deadlineTimeValue = document.getElementById('deadline-time').value;
+
+                const values = {
+                    noticeDate: noticeDateValue ? new Date(noticeDateValue).toLocaleDateString('en-GB') : '',
+                    noticeType: document.getElementById('notice-type').value,
+                    batch: document.getElementById('batch').value,
+                    companyName: document.getElementById('company-name').value,
+                    jobRole: document.getElementById('job-role').value,
+                    eligibility: document.getElementById('eligibility').value,
+                    salary: document.getElementById('salary').value,
+                    ppo: document.getElementById('ppo').value,
+                    location: document.getElementById('location').value,
+                    workMode: document.getElementById('work-mode').value,
+                    workingDays: document.getElementById('working-days').value,
+                    workingHours: document.getElementById('working-hours').value,
+                    employmentType: document.getElementById('employment-type').value,
+                    hiringProcess: document.getElementById('hiring-process').value,
+                    driveType: document.getElementById('drive-type').value,
+                    roles: document.getElementById('roles-responsibilities').value.split('\n'),
+                    eligibilityCriteria: document.getElementById('eligibility-criteria').value.split('\n'),
+                    aboutCompany: document.getElementById('about-company').value.split('\n'),
+                    companyWebsite: document.getElementById('company-website').value,
+                    deadlineDate: formatDate(deadlineDateValue),
+                    deadlineTime: formatTime(deadlineTimeValue),
+                    googleFormLink: document.getElementById('google-form-link').value,
+                    whatsappLink: document.getElementById('whatsapp-link').value,
+                    coord1Name: document.getElementById('coordinator1-name').value,
+                    coord1Num: document.getElementById('coordinator1-number').value,
+                    coord2Name: document.getElementById('coordinator2-name').value,
+                    coord2Num: document.getElementById('coordinator2-number').value,
+                };
+
+                const doc = new Document({
+                    sections: [{
+                        children: [
+                            new Paragraph({ text: values.noticeDate, alignment: AlignmentType.RIGHT }),
+                            new Paragraph({ text: "" }), // Spacer
+                            new Paragraph({ 
+                                children: [new TextRun({ text: values.noticeType + " NOTICE", bold: true })], 
+                                heading: HeadingLevel.HEADING_1, 
+                                alignment: AlignmentType.CENTER 
+                            }),
+                            new Paragraph({ text: "For Batch " + values.batch, heading: HeadingLevel.HEADING_2, alignment: AlignmentType.CENTER }),
+                            new Paragraph({ text: "" }), // Spacer
+
+                            new Paragraph({ children: [new TextRun({ text: "Company: ", bold: true }), new TextRun(values.companyName)] }),
+                            new Paragraph({ children: [new TextRun({ text: "Job Role: ", bold: true }), new TextRun(values.jobRole)] }),
+                            new Paragraph({ children: [new TextRun({ text: "Eligibility: ", bold: true }), new TextRun(values.eligibility)] }),
+                            new Paragraph({ children: [new TextRun({ text: "Salary/Stipend: ", bold: true }), new TextRun(values.salary)] }),
+                            new Paragraph({ children: [new TextRun({ text: "PPO: ", bold: true }), new TextRun(values.ppo)] }),
+                            new Paragraph({ children: [new TextRun({ text: "Location: ", bold: true }), new TextRun(values.location)] }),
+                            new Paragraph({ children: [new TextRun({ text: "Work mode: ", bold: true }), new TextRun(values.workMode)] }),
+                            new Paragraph({ children: [new TextRun({ text: "Working days: ", bold: true }), new TextRun(values.workingDays)] }),
+                            new Paragraph({ children: [new TextRun({ text: "Working Hours: ", bold: true }), new TextRun(values.workingHours)] }),
+                            new Paragraph({ children: [new TextRun({ text: "Type of Employment: ", bold: true }), new TextRun(values.employmentType)] }),
+                            new Paragraph({ children: [new TextRun({ text: "Hiring Process: ", bold: true }), new TextRun(values.hiringProcess)] }),
+                            new Paragraph({ children: [new TextRun({ text: "Drive type: ", bold: true }), new TextRun(values.driveType)] }),
+                            new Paragraph({ text: "" }),
+                            
+                            new Paragraph({ children: [new TextRun({ text: "Roles & Responsibilities:", bold: true, underline: true })] }),
+                            ...values.roles.map(line => new Paragraph({ text: line, bullet: { level: 0 } })),
+                            new Paragraph({ text: "" }),
+
+                            new Paragraph({ children: [new TextRun({ text: "Eligibility Criteria:", bold: true, underline: true })] }),
+                            ...values.eligibilityCriteria.map(line => new Paragraph({ text: line, bullet: { level: 0 } })),
+                            new Paragraph({ text: "" }),
+
+                            new Paragraph({ children: [new TextRun({ text: "About Company:", bold: true, underline: true })] }),
+                            ...values.aboutCompany.map(line => new Paragraph({ text: line })),
+                            new Paragraph({ text: "" }),
+                            
+                            new Paragraph({ children: [new TextRun({ text: "Company Website: ", bold: true }), new TextRun(values.companyWebsite)] }),
+                            new Paragraph({ text: "" }),
+
+                            new Paragraph({ children: [new TextRun({ text: "Attention Eligible and Interested Students:", bold: true })] }),
+                            new Paragraph({ text: `Please register using the link provided below and join the designated WhatsApp group before ${values.deadlineDate}, ${values.deadlineTime}.` }),
+                            new Paragraph({ text: "" }),
+                            new Paragraph({ children: [new TextRun({ text: "Google Forms Link: ", bold: true }), new TextRun(values.googleFormLink)] }),
+                            new Paragraph({ children: [new TextRun({ text: "WhatsApp Group Link: ", bold: true }), new TextRun(values.whatsappLink)] }),
+                            new Paragraph({ text: "" }),
+
+                            new Paragraph({ children: [new TextRun({ text: "NOTE:", bold: true, underline: true })] }),
+                            new Paragraph({ text: "1. Ensure you have given valid PRN NO. to avoid disqualification." }),
+                            new Paragraph({ text: "2. No late entries will be entertained." }),
+                            new Paragraph({ text: "3. Be sure of joining the company before forwarding the CV." }),
+                            new Paragraph({ text: "4. Strict actions will be taken if non-eligible students fill the form." }),
+                            new Paragraph({ text: "5. Placed Students are not allowed, else will take strict action." }),
+                            new Paragraph({ text: "6. Rename the CVs with the candidate's names before sharing." }),
+                            new Paragraph({ text: "" }),
+
+                            new Paragraph({ children: [new TextRun({ text: "Placement Coordinators:", bold: true })] }),
+                            new Paragraph({ text: `${values.coord1Name} : ${values.coord1Num}` }),
+                            new Paragraph({ text: `${values.coord2Name} : ${values.coord2Num}` }),
+                            new Paragraph({ text: "" }),
+
+                            new Paragraph({ text: "Thanks & Regards," }),
+                            new Paragraph({ text: "Ashish Dhoke" }),
+                            new Paragraph({ text: "Deputy Director, Outreach and Placements" }),
+                            new Paragraph({ text: "Indira Group of Institutes, Pune" }),
+                            new Paragraph({ text: "7709016308" }),
+                        ],
+                    }],
+                });
+
+                Packer.toBlob(doc).then(blob => {
+                    const companyName = values.companyName || "Notice";
+                    const fileName = `${companyName.replace(/ /g, '_')}_Placement_Notice.docx`;
+                    saveAs(blob, fileName);
+                }).catch(err => {
+                    console.error("Error during DOCX packing:", err);
+                });
+
+            } catch (error) {
+                console.error("An error occurred in generateDocument:", error);
+            }
+        }
+    </script>
+</body>
+</html>
