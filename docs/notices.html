@@ -65,6 +65,12 @@
             height: 100%;
             transition: width 0.3s ease-in-out;
         }
+        .error-message {
+            color: #F87171;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -119,6 +125,7 @@
                         </div>
                         <span id="upload-status" class="text-sm text-slate-400"></span>
                     </div>
+                     <p id="error-message" class="error-message"></p>
                     <button type="submit" id="submit-button" class="w-full bg-indigo-500 text-white font-semibold px-8 py-3 rounded-lg hover:bg-indigo-600 transition-all duration-300 shadow-lg shadow-indigo-500/20 flex items-center justify-center">
                         <i data-lucide="upload-cloud" class="mr-2"></i>
                         Upload Notice
@@ -173,6 +180,7 @@
         const uploadStatus = document.getElementById('upload-status');
         const noticesContainer = document.getElementById('notices-container');
         const loadingState = document.getElementById('loading-state');
+        const errorMessage = document.getElementById('error-message');
         
         let currentUserId = null;
         let noticesCollectionRef = null;
@@ -201,7 +209,7 @@
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             if (!currentUserId) {
-                alert("You must be logged in to upload a notice.");
+                showError("You must be logged in to upload a notice.");
                 return;
             }
             const title = form['notice-title'].value.trim();
@@ -210,18 +218,23 @@
             if (title && file) {
                 uploadFile(title, file);
             } else {
-                alert("Please provide a title and select a file.");
+                showError("Please provide a title and select a file.");
             }
         });
+        
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+        }
 
         function uploadFile(title, file) {
             const fileId = `${Date.now()}-${file.name}`;
-            // User-specific storage path
             const storageRef = ref(storage, `users/${currentUserId}/notices/${fileId}`);
             const uploadTask = uploadBytesResumable(storageRef, file);
 
             submitButton.disabled = true;
             progressContainer.classList.remove('hidden');
+            errorMessage.style.display = 'none';
 
             uploadTask.on('state_changed', 
                 (snapshot) => {
@@ -231,7 +244,7 @@
                 }, 
                 (error) => {
                     console.error("Upload failed:", error);
-                    alert("File upload failed. Please try again.");
+                    showError(`Upload failed: ${error.code}`);
                     resetFormState();
                 }, 
                 () => {
@@ -247,15 +260,15 @@
                 await addDoc(noticesCollectionRef, {
                     title,
                     originalFileName,
-                    fileId, // Store fileId for deletion from storage
+                    fileId,
                     downloadURL,
                     createdAt: serverTimestamp()
                 });
                 form.reset();
                 fileNameDisplay.textContent = '';
             } catch (error) {
-                console.error("Error adding document: ", error);
-                alert("Failed to save notice details.");
+                console.error("Error adding document to Firestore: ", error);
+                showError("Failed to save notice details.");
             } finally {
                 resetFormState();
             }
